@@ -1,3 +1,5 @@
+from app import mongo_db
+
 intents = [
     {
         "tag": "greetings",
@@ -534,3 +536,26 @@ def chat_service(question):
     for x in intents:
         if inputValue.lower() in x["patterns"]:
             return x["responses"][0]
+        
+         
+def voice_chat_service(request):
+    chat_list = []
+    data = request.get_json()
+    command = data.get("command")
+    query = {"$text": {"$search": command}}
+    result = mongo_db.Service_Data.find(query)
+    for x in result:
+        chat_list.append(
+            {
+                "_id": str(x["_id"]),
+                "tag": x["tag"],
+                "patterns": x["patterns"],
+                "responses": x["responses"],
+                "context": x["context"],
+            }
+        )
+    if len(chat_list)>0:
+        response = chat_list[0]['responses'][0]
+    else:
+        response = "Sorry...! I didn't understand"
+    return response

@@ -6,8 +6,10 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import client from "@/services/client";
 import { application } from "@/config/apis";
-import { BsFillMicFill } from "react-icons/bs";
-import ReactPlayer from "react-player";
+import { BsFillMicFill } from "react-icons/bs";import { link } from "fs";
+import Link from "next/link";
+import Image from "next/image";
+;
 const VoiceAssistant = () => {
   const [userInput, setUserInput] = useState<any>("");
   const [userOutput, setOutput] = useState<any>("");
@@ -20,6 +22,12 @@ const VoiceAssistant = () => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
+  useEffect(() => {
+     setTimeout(() => {
+      window.location.reload();
+    }, 60000);
+  }, []);
+  
   async function chatGPT3(message: any) {
     try {
       const response: any = await client.post(
@@ -56,6 +64,9 @@ const VoiceAssistant = () => {
       chatGPT3(transcript).then((response) => {
         const speechSynthesis = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(response.data.response);
+  
+        utterance.lang = 'hi';
+  
         const getDel = utterance.text;
         if (getDel.includes("https")) {
           ("");
@@ -65,32 +76,38 @@ const VoiceAssistant = () => {
       });
     }
   }, [transcript, listening]);
+  
 
-  useEffect(() => {
-    setTimeout(() => {
-      setOutput("");
-    }, 4000);
-  }, [userOutput]);
+  
 
   return (
-    <div className="flex flex-col items-center h-screen  bg-fuchsia-100 rounded-lg w-2/3">
-      {/* <div className="w-fit">
-        <ReactPlayer url="https://youtu.be/60ItHLz5WEA?si=MZ_WSCpT7iIx9Iaz" />
-      </div> */}
+    <div className="flex flex-col items-center h-screen w-1/4 px-3 bg-fuchsia-100 rounded-lg ">
+      <div className="flex gap-2 pt-4">
+      <div className="">Your</div>
+      <Image
+        src="/VoiceAssistantLogo.png" // Path to your logo image in the public directory
+        alt="Voice Assistant Logo"
+        width={30} // Set the desired width
+        height={5} // Set the desired height
+        />
+      <div><b className="text-orange-400">assistant</b></div>
+        </div>
+      {/* <Voice_Chat_History/> */}
       <div className="flex-grow justify-center items-center">
-        {transcript && <div>{transcript}</div>}
+        {transcript && <div>{transcript }</div>}
         {userOutput.includes("https") ? (
           <p>{"Playing..."}</p>
         ) : (
           <p>{userOutput}</p>
         )}
       </div>
+      <div className="py-2 text-base font-sans cursor-pointer" ><Link href={"/ChatHistory"}>Check <b>chat </b> history</Link></div>
       {listening ? (
         <p className="pb-4">Go ahead..</p>
       ) : (
-        <p className="pb-4">Click on mic to ask anything</p>
+        <div className=" text-base font-sans ">Click on <b>mic</b> to ask anything<br/> <p className="text-center ">or enter <b>text</b></p></div>
       )}
-      <div className="flex justify-between items-center h-[7%] border-[2px] rounded-md">
+      <div className="flex justify-between items-center h-[7%] border-[2px] rounded-md mx-2">
         <input
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
@@ -118,9 +135,6 @@ const VoiceAssistant = () => {
             className={`font-[700] w-fit px-2 h-full ${
               userInput ? "cursor-pointer" : "cursor-default"
             }`}
-            // className={` ${
-            //   userInput ? "#19C37D" : "grey"
-            // }`}
             onClick={() => handleTextToSpeech(userInput)}
             disabled={userInput.length == 0}
           >

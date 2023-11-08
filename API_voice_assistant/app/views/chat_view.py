@@ -2,7 +2,7 @@
 from flask import jsonify
 from app.controllers.chat_controller import ChatController
 
-chat_controller = ChatController()  # Pass mongo_db object during instantiation
+chat_controller = ChatController()  
 
 
 class ChatView:
@@ -21,4 +21,5 @@ class ChatView:
         return jsonify(chat), 201
 
     def get_Chats_Voice(self):
-        return jsonify(self.chat_controller.get_chats_Voice()), 200
+        chat = self.chat_controller.get_chats_Voice()
+        return jsonify(chat), 201

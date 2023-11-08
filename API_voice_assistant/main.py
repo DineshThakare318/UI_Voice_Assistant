@@ -52,6 +52,7 @@
 
 import collections
 import datetime
+import webbrowser
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
@@ -65,6 +66,8 @@ from app.controllers.chat_controller import ChatController
 from app.views.user_view import UserView
 from app.views.auth_view import AuthView
 from app.views.chat_view import ChatView
+from app import mongo_db
+from app.service.chat_service import voice_chat_service
 
 app = Flask(__name__)
 CORS(app)
@@ -77,40 +80,52 @@ chat_view = ChatView(chat_controller)
 
 @app.route("/api/command", methods=["POST"])
 def process_command():
+    a = True
     data = request.get_json()
     command = data["command"].lower()
-    response = "Sorry, I don't understand that command."
+    # sites = [["youtube","https://www.youtube.com"], ["wikipedia" "https://www.wikipedia.com"],["google" "https://www.google.com"]]
+    response = ""
+    sites = [{"siteName":"youtube","url":"https://www.youtube.com", "response":"Opening youtube"},
+             {"siteName":"google","url":"https://www.google.com", "response":"Opening google"},
+             {"siteName":"wikipedia","url":"https://www.wikipedia.com","response":"Opening Wikipedia"}
+             ] 
+    for site in sites:
+        if f"open {site['siteName']}".lower() in command:
+            a = webbrowser.open(site['url'])
+            if a:
+                response = site['response']
+            else:
+                response = f"Error in opening {site['siteName']}"
+        elif "hello" in command:
+            response = "Hello! How can I help you?"
 
-    if "hello" in command:
-        response = "Hello! How can I help you?"
+        elif "how are you" in command:
+            response = "I am fine, what about you"
 
-    elif "how are you" in command:
-        response = "I am fine, what about you"
+        elif "time" in command:
+            current_time = datetime.datetime.now().strftime("%H:%M:%S")
+            response = f"The current time is {current_time}"
+        elif "play" in command:
+            song = command.replace("play", "")
+            response = pywhatkit.playonyt(song)
+        elif "who is" in command:
+            human = command.replace("who is", "")
+            info = wikipedia.summary(human, 1)
+            response = info
+        elif "exit" in command:
+            response = "Goodbye! Have a great day....!!"
 
-    elif "time" in command:
-        current_time = datetime.datetime.now().strftime("%H:%M:%S")
-        response = f"The current time is {current_time}"
-    elif "play" in command:
-        song = command.replace("play", "")
-        response = pywhatkit.playonyt(song)
-    elif "who is" in command:
-        human = command.replace("who is", "")
-        info = wikipedia.summary(human, 1)
-        response = info
-    elif "exit" in command:
-        response = "Goodbye! Have a great day....!!"
-    else:
-        response = "Sorry, I didn't understand ."
-
-    return jsonify({"response": response})
+        if len(response)==0:
+            response = voice_chat_service(request)
+        return jsonify({"response": response})
 
 
-@app.route("/chat_History", methods=["POST"])
+@app.route("/voicechat", methods=["POST"])
 def chat():
     return chat_view.chat_Voice(request)
 
 
-@app.route("/chat_History", methods=["GET"])
+@app.route("/voicechats", methods=["GET"])
 def get_chats():
     return chat_view.get_Chats_Voice()
 
@@ -118,30 +133,3 @@ def get_chats():
 if __name__ == "__main__":
     app.run(debug=True)
 
-
-# def playHitesh():
-#     instruction = input_instruction()
-#     print(instruction)
-#     if "play" in instruction:
-#         song = instruction.replace("play", "")
-#         talk("playing" + song)
-#         pywhatkit.playonyt(song)
-
-#     elif "time" in instruction:
-#         time = datetime.datetime.now().strftime("%I:%M %p")
-#         talk("Current Time: " + time)
-
-#     elif "date" in instruction:
-#         date = datetime.datetime.now().strftime("%d/%m/%y")
-#         talk("Today's date " + date)
-
-#     elif "how are you" in instruction:
-#         talk("I am fine, what about you")
-
-#     elif "who is" in instruction:
-#         human = instruction.replace("who is", "")
-#         info = wikipedia.summary(human, 1)
-#         print(info)
-#         talk(info)
-#     else:
-#         talk("Please repeat")
