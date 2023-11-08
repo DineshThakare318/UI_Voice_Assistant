@@ -65,8 +65,6 @@ const VoiceAssistant = () => {
         const speechSynthesis = window.speechSynthesis;
         const utterance = new SpeechSynthesisUtterance(response.data.response);
   
-        utterance.lang = 'hi';
-  
         const getDel = utterance.text;
         if (getDel.includes("https")) {
           ("");
@@ -85,10 +83,10 @@ const VoiceAssistant = () => {
       <div className="flex gap-2 pt-4">
       <div className="">Your</div>
       <Image
-        src="/VoiceAssistantLogo.png" // Path to your logo image in the public directory
+        src="/VoiceAssistantLogo.png" 
         alt="Voice Assistant Logo"
-        width={30} // Set the desired width
-        height={5} // Set the desired height
+        width={30}
+        height={5} 
         />
       <div><b className="text-orange-400">assistant</b></div>
         </div>
@@ -101,7 +99,7 @@ const VoiceAssistant = () => {
           <p>{userOutput}</p>
         )}
       </div>
-      <div className="py-2 text-base font-sans cursor-pointer" ><Link href={"/ChatHistory"}>Check <b>chat </b> history</Link></div>
+      <div className="py-2 font-medium cursor-pointer text-sm" ><Link href={"/ChatHistory"}>Check <b>chat </b> history</Link></div>
       {listening ? (
         <p className="pb-4">Go ahead..</p>
       ) : (

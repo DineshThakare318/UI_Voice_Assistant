@@ -97,12 +97,8 @@ class ChatController:
         command = data.get("command")
         chats = mongo_db.Service_Data.find({}, {})
         chat_list = []
-
-        print("&**************************************************************")
         query = {"$text": {"$search": command}}
         result = mongo_db.Service_Data.find(query)
-        print(result)
-        print("&**************************************************************")
         for x in result:
             chat_list.append(
                 {
@@ -120,12 +116,9 @@ class ChatController:
     def get_chats_Voice(self):
         chats = mongo_db.Service_Data.find({}, {})
         chat_list = []
-
-        print("&**************************************************************")
         query = {"$text": {"$search": "hello"}}
         result = mongo_db.Service_Data.find(query)
         print(result)
-        print("&**************************************************************")
         for x in chats:
             chat_list.append(
                 {
