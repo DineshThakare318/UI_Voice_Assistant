@@ -62,18 +62,32 @@ def process_command():
             response = info
         elif "exit" in command:
             response = "Goodbye! Have a great day....!!"
+         
 
         if len(response) == 0:
             response = voice_chat_service(request)
-        return jsonify({"response": response})
+        chat_message = {
+        "command": command,  # Replace with the user identifier
+        "response": response,  # The chat message
+        "time": datetime.datetime.now()  # Timestamp for the message
+    }
+        print("??????????????????????????????????????????????")
+        print(chat_message)
+    mongo_db.chats.insert_one(chat_message)
 
+    return jsonify({"response": response})
+
+
+@app.route("/chathistory", methods=["GET"])
+def get_chat_History():
+    return chat_view.get_chats()
 
 @app.route("/voicechat", methods=["POST"])
 def chat():
     return chat_view.chat_Voice(request)
 
 
-@app.route("/voicechats", methods=["GET"])
+@app.route("/voicechat", methods=["GET"])
 def get_chats():
     return chat_view.get_Chats_Voice()
 

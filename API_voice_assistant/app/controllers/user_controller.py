@@ -1,21 +1,3 @@
-# # app/controllers/user_controller.py
-# from app.models.user import User
-
-# class UserController:
-#     def __init__(self):
-#         self.users = []
-
-#     def create_user(self, username, email):
-#         user_id = len(self.users) + 1
-#         user = User(user_id, username, email)
-#         self.users.append(user)
-#         return user
-
-#     def get_users(self):
-#         return [user.to_dict() for user in self.users]
-
-
-
 
 # app/controllers/user_controller.py
 from app.models.user import User  # Import the User class

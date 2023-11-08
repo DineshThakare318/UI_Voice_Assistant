@@ -131,3 +131,24 @@ class ChatController:
             )
         response_data = {"data": chat_list}
         return response_data, 200
+    
+
+    def get_chats_History(self):
+        chats = mongo_db.chats.find({}, {})
+        chat_list = []
+        query = {"$text": {"$search": "hello"}}
+        result = mongo_db.Service_Data.find(query)
+        print(result)
+        for x in chats:
+            chat_list.append(
+                {
+                    "_id": str(x["_id"]),
+                    "tag": x["tag"],
+                    "patterns": x["patterns"],
+                    "responses": x["responses"],
+                    "context": x["context"],
+                }
+            )
+        response_data = {"data": chat_list}
+        return response_data, 200
+

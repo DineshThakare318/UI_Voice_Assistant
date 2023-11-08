@@ -11,7 +11,7 @@ const  ChatHistory =()=> {
       const fetchChatHistory = async () => {
         try {
           const response = await client.get(
-            `${application.baseUrl}/voice_chat`
+            `${application.baseUrl}/chathistory`
           );
           setHistory(response.data[0].data);
           console.log(response.data[0].data);
@@ -25,8 +25,8 @@ const  ChatHistory =()=> {
   
     return (
       <div className="flex flex-col overflow-y-scroll  h-screen overflow-x-hidden  ">
-        <div className="w-full h-full flex justify-center items-end ">
-          <div className="w-1/4 h-full">
+        <div className="w-full h-full flex justify-center">
+          <div className="w-1/4 h-[70%] overflow-y-scroll">
         {history.length>0 ? <>  {history.map((entry: any) => (
               <div key={entry._id}>
                {  entry?.command  && command(entry?.command,entry?.time) }
@@ -36,7 +36,7 @@ const  ChatHistory =()=> {
         </div>
         <div ref={ref} />
         </div>
-        <div className="flex justify-center pb-9 "><Link href="/"> Go to main page</Link></div>
+        <div className="flex justify-center  "><Link href="/"> Go to main page</Link></div>
       </div>
     );
 }
