@@ -1,5 +1,4 @@
 from app import mongo_db
-
 intents = [
     {
         "tag": "greetings",

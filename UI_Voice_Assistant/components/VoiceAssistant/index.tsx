@@ -13,7 +13,6 @@ import Image from "next/image";
 const VoiceAssistant = () => {
   const [userInput, setUserInput] = useState<any>("");
   const [userOutput, setOutput] = useState<any>("");
-  console.log("userOutput: ", userOutput);
 
   const {
     transcript,
@@ -67,14 +66,18 @@ const VoiceAssistant = () => {
       
       if (!listening && transcript) {
         chatGPT3(transcript).then((response) => {
-          const speechSynthesis = window.speechSynthesis;
-          const utterance = new SpeechSynthesisUtterance(response.data.response);
-          
-          const getDel = utterance.text;
-          if (getDel.includes("https")) {
-            ("");
-          } else {
-            speechSynthesis.speak(utterance);
+          try{
+            const speechSynthesis = window.speechSynthesis;
+            const utterance = new SpeechSynthesisUtterance(response.data.response);
+            
+            const getDel = utterance.text;
+            if (getDel.includes("https")) {
+              ("");
+            } else {
+              speechSynthesis.speak(utterance);
+            }
+          }catch{
+                 alert("please give a right command")
           }
         });
       }

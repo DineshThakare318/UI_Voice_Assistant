@@ -4,10 +4,10 @@ import client from "@/services/client";
 import { application } from "@/config/apis";
 import Link from "next/link";
 import  { BiLeftArrowAlt }  from "react-icons/bi"; 
-import Image from "next/image";
+import Loader from "@/components/Loader";
 const  ChatHistory =()=> {
     const [history, setHistory] = useState([]);
-    console.log('history: ', history.length);
+    const [loading, setLoading] = useState(true);
     const ref = useRef<HTMLDivElement>(null);
     useEffect(() => {
       const fetchChatHistory = async () => {
@@ -19,6 +19,8 @@ const  ChatHistory =()=> {
           console.log(response.data[0].data);
         } catch (error) {
           console.error(error);
+        } finally{
+          setLoading(false)
         }
       };
   
@@ -30,12 +32,12 @@ const  ChatHistory =()=> {
       
         <div className="flex gap-96 pb-3 items-center ">
           <Link href="/"><BiLeftArrowAlt className="h-6 w-40 " /></Link>
-        <p className="flex justify-center items-center text-emerald-950 text-[25px] pl-16">Chat History</p>
+        <p className="flex justify-center items-center text-emerald-950 text-[25px] ">Chat History</p>
           </div>
         <div className="flex justify-center h-5/6">  
         <div className="w-2/6  flex justify-center items-center  bg-[#42f5e6] rounded-xl py-3">
           <div className="w-full overflow-y-scroll  h-full py-2">
-        {history.length>0 ? <>  {history.map((entry: any) => (
+        { loading ? <p className=" flex justify-center pt-20 text-[20px] items-center">Loading...</p> : history.length>0 ? <>  {history.map((entry: any) => (
               <div key={entry._id}>
                {  entry?.command  && command(entry?.command,entry?.time) }
                { entry.response && response(entry?.response ,entry?.time) }
