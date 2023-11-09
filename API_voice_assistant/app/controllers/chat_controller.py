@@ -4,7 +4,6 @@ from app import mongo_db
 from dotenv import load_dotenv
 from datetime import datetime
 from app.service.chat_service import chat_service
-import pymongo
 
 load_dotenv()
 

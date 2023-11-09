@@ -6,7 +6,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import client from "@/services/client";
 import { application } from "@/config/apis";
-import { BsFillMicFill } from "react-icons/bs";import { link } from "fs";
+import { BsFillMicFill } from "react-icons/bs";
 import Link from "next/link";
 import Image from "next/image";
 ;
@@ -46,6 +46,7 @@ const VoiceAssistant = () => {
   }
 
   const handleTextToSpeech = async (text: string) => {
+    try{
     if (text) {
       const response = await chatGPT3(text);
       const speechSynthesis = window.speechSynthesis;
@@ -56,63 +57,69 @@ const VoiceAssistant = () => {
       } else {
         speechSynthesis.speak(utterance);
       }
-    }
+    } } catch(e){
+           alert("Your are offline")
+    } 
   };
 
   useEffect(() => {
-    if (!listening && transcript) {
-      chatGPT3(transcript).then((response) => {
-        const speechSynthesis = window.speechSynthesis;
-        const utterance = new SpeechSynthesisUtterance(response.data.response);
-  
-        const getDel = utterance.text;
-        if (getDel.includes("https")) {
-          ("");
-        } else {
-          speechSynthesis.speak(utterance);
-        }
-      });
+    try{
+      
+      if (!listening && transcript) {
+        chatGPT3(transcript).then((response) => {
+          const speechSynthesis = window.speechSynthesis;
+          const utterance = new SpeechSynthesisUtterance(response.data.response);
+          
+          const getDel = utterance.text;
+          if (getDel.includes("https")) {
+            ("");
+          } else {
+            speechSynthesis.speak(utterance);
+          }
+        });
+      }
+    } catch(e){
+      alert("You are offline")
     }
-  }, [transcript, listening]);
+    }, [transcript, listening]);
   
 
   
 
   return (
-    <div className="flex flex-col items-center h-screen w-1/4 px-3 bg-fuchsia-100 rounded-lg ">
-      <div className="flex gap-2 pt-4">
+    <div className="my-2 flex flex-col items-center h-screen w-3/6 px-3  bg-green-100 rounded-lg ">
+      <div className="flex gap-2 pt-6 text-[30px] pl-16">
       <div className="">Your</div>
       <Image
         src="/VoiceAssistantLogo.png" 
         alt="Voice Assistant Logo"
-        width={30}
+        width={70}
         height={5} 
         />
-      <div><b className="text-orange-400">assistant</b></div>
+      <div><b className="text-orange-400">Assistant</b></div>
         </div>
-      {/* <Voice_Chat_History/> */}
-      <div className="flex-grow justify-center items-center">
-        {transcript && <div>{transcript }</div>}
+      <div className="flex-grow justify-center items-center pt-4 ">
+        {transcript && <div className="font-bold text-center">{transcript }</div>}
         {userOutput.includes("https") ? (
-          <p>{"Playing..."}</p>
+          <p className="text-black">{"Playing..."}</p>
         ) : (
           <p>{userOutput}</p>
         )}
       </div>
       <div className="py-2 font-medium cursor-pointer text-sm" ><Link href={"/ChatHistory"}>Check <b>chat </b> history</Link></div>
       {listening ? (
-        <p className="pb-4">Go ahead..</p>
+        <p className="pb-4">{"Go ahead, I`m listening..."}</p>
       ) : (
-        <div className=" text-base font-sans ">Click on <b>mic</b> to ask anything<br/> <p className="text-center ">or enter <b>text</b></p></div>
+        <div className=" text-base font-sans pb-2">Click on <b>mic</b> to ask anything<br/> <p className="text-center ">or enter <b>text</b></p></div>
       )}
-      <div className="flex justify-between items-center h-[7%] border-[2px] rounded-md mx-2">
+      <div className="flex justify-between items-center h-[7%] border-[2px] rounded-md w-5/6 mb-3">
         <input
           value={userInput}
           onChange={(e) => setUserInput(e.target.value)}
           className="w-full h-full p-2 outline-none px-4 bg-transparent"
           placeholder="Enter a message..."
         />
-        <div className="flex justify-center items-center gap-2">
+        <div className="flex justify-center items-center gap-2 ">
           <div className="w-full h-full flex justify-center items-center">
             <div
               onClick={() => {

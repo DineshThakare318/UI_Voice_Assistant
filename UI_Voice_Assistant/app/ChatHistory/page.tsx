@@ -3,6 +3,8 @@ import { useEffect, useState,useRef } from "react";
 import client from "@/services/client";
 import { application } from "@/config/apis";
 import Link from "next/link";
+import  { BiLeftArrowAlt }  from "react-icons/bi"; 
+import Image from "next/image";
 const  ChatHistory =()=> {
     const [history, setHistory] = useState([]);
     console.log('history: ', history.length);
@@ -24,19 +26,25 @@ const  ChatHistory =()=> {
     }, []);
   
     return (
-      <div className="flex flex-col overflow-y-scroll  h-screen overflow-x-hidden  ">
-        <div className="w-full h-full flex justify-center">
-          <div className="w-1/4 h-[70%] overflow-y-scroll">
+      <div className="flex flex-col h-screen pt-3 ">
+      
+        <div className="flex gap-96 pb-3 items-center ">
+          <Link href="/"><BiLeftArrowAlt className="h-6 w-40 " /></Link>
+        <p className="flex justify-center items-center text-emerald-950 text-[25px] pl-16">Chat History</p>
+          </div>
+        <div className="flex justify-center h-5/6">  
+        <div className="w-2/6  flex justify-center items-center  bg-[#42f5e6] rounded-xl py-3">
+          <div className="w-full overflow-y-scroll  h-full py-2">
         {history.length>0 ? <>  {history.map((entry: any) => (
               <div key={entry._id}>
                {  entry?.command  && command(entry?.command,entry?.time) }
-               { entry.response && response(entry?.response , entry.time) }
+               { entry.response && response(entry?.response ,entry?.time) }
             </div>
           ))}</> : <div className="flex justify-center h-full items-center text-orange-500 font-semibold">{"No data found"}</div> }
         </div>
         <div ref={ref} />
         </div>
-        <div className="flex justify-center  "><Link href="/"> Go to main page</Link></div>
+        </div>
       </div>
     );
 }
@@ -45,9 +53,9 @@ export default ChatHistory;
 
 const command = (question: string, time: string) => {
     return (
-      <div className="m-1 my-3">
+      <div className="m-1 ">
         <div className="w-full flex justify-end items-center relative">
-          <span className="w-fit max-w-[80%] m-1 flex justify-end items-center pl-4 p-2 rounded-t-xl rounded-bl-xl bg-green-100">
+          <span className="w-fit max-w-[70%] m-1 flex justify-end items-center pl-4 p-2 rounded-t-xl rounded-bl-xl bg-green-100">
             {question}
           </span>
         </div>

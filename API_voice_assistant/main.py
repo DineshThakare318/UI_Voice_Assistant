@@ -1,5 +1,4 @@
 import collections
-import datetime
 import webbrowser
 from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
@@ -9,20 +8,16 @@ import pyttsx3
 import pywhatkit
 import datetime
 import wikipedia
-from app.controllers.auth_controller import AuthController
 from app.controllers.chat_controller import ChatController
-from app.views.user_view import UserView
-from app.views.auth_view import AuthView
 from app.views.chat_view import ChatView
 from app import mongo_db
+from datetime import datetime
 from app.service.chat_service import voice_chat_service
 
 app = Flask(__name__)
 CORS(app)
 
-auth_controller = AuthController()
 chat_controller = ChatController()
-auth_view = AuthView(auth_controller)
 chat_view = ChatView(chat_controller)
 
 
@@ -67,12 +62,10 @@ def process_command():
         if len(response) == 0:
             response = voice_chat_service(request)
         chat_message = {
-        "command": command,  # Replace with the user identifier
-        "response": response,  # The chat message
-        "time": datetime.datetime.now()  # Timestamp for the message
+        "command": command, 
+        "response": response, 
+        "time": datetime.now().strftime("%H:%M")
     }
-        print("??????????????????????????????????????????????")
-        print(chat_message)
     mongo_db.chats.insert_one(chat_message)
 
     return jsonify({"response": response})

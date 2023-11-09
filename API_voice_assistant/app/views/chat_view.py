@@ -1,4 +1,3 @@
-# app/views/user_view.py
 from flask import jsonify
 from app.controllers.chat_controller import ChatController
 
