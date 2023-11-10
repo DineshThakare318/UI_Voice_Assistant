@@ -28,16 +28,16 @@ const  ChatHistory =()=> {
     }, []);
   
     return (
-      <div className="flex flex-col h-screen pt-3 ">
+      <div className="flex flex-col h-screen pt-3">
       
         <div className="flex gap-96 pb-3 items-center ">
           <Link href="/"><BiLeftArrowAlt className="h-6 w-40 " /></Link>
-        <p className="flex justify-center items-center text-emerald-950 text-[25px] ">Chat History</p>
+        <p className="flex justify-center items-center pl-14 text-emerald-950 text-[25px] ">Chat History</p>
           </div>
         <div className="flex justify-center h-5/6">  
         <div className="w-2/6  flex justify-center items-center  bg-[#42f5e6] rounded-xl py-3">
           <div className="w-full overflow-y-scroll  h-full py-2">
-        { loading ? <p className=" flex justify-center pt-20 text-[20px] items-center">Loading...</p> : history.length>0 ? <>  {history.map((entry: any) => (
+        { loading ? <p className=" flex justify-center pt-52 text-[20px] items-center">Loading...</p> : history.length>0 ? <>  {history.map((entry: any) => (
               <div key={entry._id}>
                {  entry?.command  && command(entry?.command,entry?.time) }
                { entry.response && response(entry?.response ,entry?.time) }
@@ -73,7 +73,7 @@ const command = (question: string, time: string) => {
       <div className=" m-1 my-3">
         <div className="w-full flex justify-start items-center relative">
           <span className="w-fit max-w-[80%] -my-1 flex justify-end items-center pl-4 p-2 rounded-b-xl rounded-tr-xl bg-gray-200">
-            {answer}
+            {answer.includes("https") ? answer.slice(0,470)  : answer}
           </span>
         </div>
         <span className="text-xs">{time}</span>
