@@ -12,8 +12,7 @@ import Image from "next/image";
 import "./style.css";
 const VoiceAssistant = () => {
   const [userInput, setUserInput] = useState<any>("");
-  const [userOutput, setOutput] =
-    useState<any>("");
+  const [userOutput, setOutput] = useState<any>("");
 
   const {
     transcript,
@@ -89,21 +88,33 @@ const VoiceAssistant = () => {
     }
   }, [transcript, listening]);
 
+  const handleSendMessage = async () => {
+    try {
+      const response = await chatGPT3(userInput);
+      setUserInput("");
+      setOutput(response.data.response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="my-2 flex flex-col h-full w-3/6 px-3  bg-green-100 rounded-lg overflow-hidden">
       <div className="h-[70%] max-h-[70%]">
         <div className="flex justify-center items-center gap-2 pt-6 text-[30px] pl-16">
           <div className="">Your</div>
+        <div className={` logo-container ${listening ? "logo-animation" : ""}`}>
           <Image
             src="/VoiceAssistantLogo.png"
             alt="Voice Assistant Logo"
             width={70}
             height={5}
           />
+        </div>
           <div>
             <b className="text-orange-400">Assistant</b>
           </div>
-        </div>
+          </div>
         <div className="justify-center  items-center pt-4 max-h-[85%] overflow-y-scroll ">
           {transcript && (
             <div className="font-bold text-center">{transcript}</div>
@@ -141,6 +152,11 @@ const VoiceAssistant = () => {
           <input
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                handleSendMessage();
+              }
+            }}
             className="w-full h-full p-2 outline-none px-4 bg-transparent"
             placeholder="Enter a message..."
           />

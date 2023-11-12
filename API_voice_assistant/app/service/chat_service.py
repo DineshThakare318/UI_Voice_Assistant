@@ -497,7 +497,7 @@ intents = [
             "what can you help me do",
         ],
         "responses": [
-            "my work here is quite simple and structered. I offer services like:"
+            "My work here is quite simple and structured. I offer services like natural language understanding, task automation, and personalized assistance. How can I make your daily tasks more efficient and convenient?:"
         ],
         "context": [""],
     },
