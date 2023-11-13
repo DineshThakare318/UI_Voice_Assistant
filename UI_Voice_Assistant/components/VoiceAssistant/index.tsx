@@ -13,7 +13,6 @@ import "./style.css";
 const VoiceAssistant = () => {
   const [userInput, setUserInput] = useState<any>("");
   const [userOutput, setOutput] = useState<any>("");
-
   const {
     transcript,
     listening,
