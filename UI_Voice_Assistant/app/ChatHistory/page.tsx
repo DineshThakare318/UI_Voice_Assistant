@@ -3,8 +3,7 @@ import { useEffect, useState,useRef } from "react";
 import client from "@/services/client";
 import { application } from "@/config/apis";
 import Link from "next/link";
-import  { BiLeftArrowAlt }  from "react-icons/bi"; 
-import Loader from "@/components/Loader";
+import  { BiLeftArrowAlt }  from "react-icons/bi";
 const  ChatHistory =()=> {
     const [history, setHistory] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -34,8 +33,8 @@ const  ChatHistory =()=> {
           <Link href="/"><BiLeftArrowAlt className="h-6 w-40 " /></Link>
         <p className="flex justify-center items-center pl-14 text-emerald-950 text-[25px] ">Chat History</p>
           </div>
-        <div className="flex justify-center h-5/6">  
-        <div className="w-2/6  flex justify-center items-center  bg-[#42f5e6] rounded-xl py-3">
+        <div className="flex justify-center h-5/6 ">  
+        <div className="w-2/6  flex flex-col justify-center items-center  bg-[#ccf5c2] rounded-xl py-3">
           <div className="w-full overflow-y-scroll  h-full py-2">
         { loading ? <p className=" flex justify-center pt-52 text-[20px] items-center">Loading...</p> : history.length>0 ? <>  {history.map((entry: any) => (
               <div key={entry._id}>
@@ -57,7 +56,7 @@ const command = (question: string, time: string) => {
     return (
       <div className="m-1 ">
         <div className="w-full flex justify-end items-center relative">
-          <span className="w-fit max-w-[70%] m-1 flex justify-end items-center pl-4 p-2 rounded-t-xl rounded-bl-xl bg-green-100">
+          <span className="w-fit text-white max-w-[70%] m-1 flex justify-end items-center pl-4 p-2 rounded-t-xl rounded-bl-xl bg-gray-500 ">
             {question}
           </span>
         </div>
@@ -72,7 +71,7 @@ const command = (question: string, time: string) => {
     return (
       <div className=" m-1 my-3">
         <div className="w-full flex justify-start items-center relative">
-          <span className="w-fit max-w-[80%] -my-1 flex justify-end items-center pl-4 p-2 rounded-b-xl rounded-tr-xl bg-gray-200">
+          <span className="w-fit max-w-[80%] text-white -my-1 flex justify-end items-center pl-4 p-2 rounded-b-xl rounded-tr-xl bg-green-500 ">
             {answer.includes("https") ? answer.slice(0,470)  : answer}
           </span>
         </div>
