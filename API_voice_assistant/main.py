@@ -61,19 +61,17 @@ def process_command():
             else:
                 response = f"Error in opening {site['siteName']}"
             break  
-
-        elif "google search" in command:
-            query = command.replace("google search", "")
-            google_search_url = f"https://www.google.com/search?q={query}"
-            webbrowser.open(google_search_url)
-            response = f"Searching Google for: {query}"
-            break
-        
         elif "hello" in command:
             response = "Hello! How can I help you?"
             break
         elif "how are you" in command:
             response = "I am fine, what about you"
+
+        # elif "your name" in command:
+        #     response: "I am your virtual assistant. How can I assist you today"  
+        #     break
+        elif "who are you" in command:
+            response = "I am a voice assistant. How can I assist you today?"    
             break
         elif "time" in command:
             current_time = datetime.now().strftime("%H:%M:%S")
