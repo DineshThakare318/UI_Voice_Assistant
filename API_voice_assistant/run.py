@@ -8,7 +8,7 @@ CORS(app)
 
 # MongoDB configuration
 client = MongoClient("mongodb+srv://dineshthakare0319:3PRTY9FX07dQtgF1@cluster0.sgpxqmf.mongodb.net/Voice_Assistant?retryWrites=true&w=majority")
-db = client["Voice_Assistant"]  # Change "your_database_name" to your actual database name
+db = client["Voice_Assistant"] 
 users_collection = db["users"]
 
 # Register endpoint
@@ -33,7 +33,7 @@ def register():
         "email": email
     })
 
-    return jsonify({"message": "Registration successful"}), 201
+    return jsonify({"message": "Registration successful"}), 200
 
 @app.route("/login", methods=["POST"])
 def login():

@@ -10,6 +10,9 @@ import { BsFillMicFill } from "react-icons/bs";
 import Link from "next/link";
 import Image from "next/image";
 import "./style.css";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import { AiOutlineLogout } from "react-icons/ai";
 const VoiceAssistant = () => {
   const [userInput, setUserInput] = useState<any>("");
   const [userOutput, setOutput] = useState<any>("");
@@ -20,11 +23,11 @@ const VoiceAssistant = () => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
-  useEffect(() => {
-    setTimeout(() => {
-      window.location.reload();
-    }, 60000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     window.location.reload();
+  //   }, 60000);
+  // }, []);
 
   async function chatGPT3(message: any) {
     try {
@@ -32,6 +35,8 @@ const VoiceAssistant = () => {
         `${application.baseUrl}/api/command`,
         {
           command: message,
+        },{
+          headers:{authorization: `Bearer ${localStorage.getItem('accessToken')}`}
         }
       );
       setUserInput("");
@@ -97,8 +102,32 @@ const VoiceAssistant = () => {
     }
   };
 
+const router = useRouter()
+  const check = async () => {
+    if(localStorage.getItem('accessToken')){
+      try {
+        const response = await axios.get("http://127.0.0.1:5000/check",{headers:{authorization:`Bearer ${localStorage.getItem('accessToken')}`}});
+        if(!response.data.isSuccess){
+          router.push('/')
+        }
+      } catch (e: any) {
+        alert(e.response.data.error);
+      }
+    }else{
+      router.push('/')
+    }
+  };
+
+  useEffect(() => {
+    check()
+  }, []);
+
   return (
-    <div className="my-2 flex flex-col h-full w-3/6 px-3  bg-green-100 rounded-lg overflow-hidden">
+    <div className="my-2 flex flex-col h-full w-3/6 px-3  bg-green-100 rounded-lg overflow-hidden relative">
+      <div onClick={()=>{
+        localStorage.setItem("accessToken","")
+        check()
+      }} className=" py-2 px-4 w-fit absolute top-2 right-2 "> <AiOutlineLogout /> </div>
       <div className="h-[70%] max-h-[70%]">
         <div className="flex justify-center items-center gap-2 pt-6 text-[30px] pl-16">
           <div className="">Your</div>
@@ -226,7 +255,7 @@ const GetFormattedText: React.FC<{ data: string }> = ({ data }) => {
       setIsPointedData(true);
       setTextData(text.split("\n\n"));
     }
-  }, []);
+  }, [data]);
   return (
     <div className="">
       {isPointedData ? (
