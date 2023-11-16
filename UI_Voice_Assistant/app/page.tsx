@@ -48,7 +48,7 @@ export default function Home() {
            <p className="flex justify-start text-[13px] text-start hover:underline cursor-pointer pt-1 pr-32">Forgot Password?</p>
           <button onClick={handleLogin} className="h-10 rounded-lg hover:bg-blue-400 hover:text-white w-[70%] border border-purple-300 mt-5 mb-3">Login</button>
            <div className="flex justify-center w-[80%] pb-3">           
-          <p className="mr-3">Don`t have an account?<Link href={"/RegisterPage"} className="hover:underline cursor-pointer underline text-blue-700">{"  "}SignUp</Link></p>
+          <p className="mr-3">Don`t have an account?<Link href={"/RegisterPage"} className="hover:text-blue-400 cursor-pointer underline text-blue-700">{"  "}SignUp</Link></p>
             </div>
         </div>
       </div>

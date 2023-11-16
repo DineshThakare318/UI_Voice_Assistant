@@ -65,7 +65,7 @@ export default function RegisterPage() {
           <button className="h-10 rounded-lg hover:bg-blue-400 w-[70%] border border-purple-300 mt-5 mb-3 hover:text-white" onClick={handleRegister}>Register</button>
            <div className="w-[60%] pb-3">
            <p >Already have an account</p>
-           <Link className="flex hover:underline cursor-pointer text-center justify-center text-blue-700 underline"  href={"/"}>Log in here</Link>
+           <Link className="flex hover:text-blue-400 cursor-pointer text-center justify-center text-blue-700 underline"  href={"/"}>Log in here</Link>
             </div>
         </div>
       </div>
