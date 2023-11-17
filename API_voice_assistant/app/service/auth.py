@@ -1,6 +1,5 @@
 import jwt
 import datetime
-
 def generate_jwt_token(secret_key, user):
     payload = {
         "_id": str(user["_id"]),
