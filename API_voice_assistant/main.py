@@ -17,6 +17,9 @@ import pyautogui
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.service.auth import validate_jwt_token, generate_jwt_token
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 app = Flask(__name__)
 CORS(app)
 
@@ -49,8 +52,9 @@ def process_command():
     else:
         data = request.get_json()
         command = data["command"].lower()
-
         response = ""
+
+        
         weather_Api_key = "f5191924548c56d6150aec375bc44a38"
         news_Api_key = "82fb77eec4ac4a97acca92bd08114d08"
 
@@ -82,9 +86,9 @@ def process_command():
             elif "how are you" in command:
                 response = "I am fine, what about you"
 
-            # elif "your name" in command:
-            #     response: "I am your virtual assistant. How can I assist you today"  
-            #     break
+            elif "your name" in command:
+                response = "I am your virtual assistant. How can I assist you today"  
+                break
             elif "who are you" in command:
                 response = "I am a voice assistant. How can I assist you today?"    
                 break
@@ -132,7 +136,6 @@ def process_command():
                 try:
                     news_response = requests.get(news_url)
                     news_data = news_response.json()
-
                     if news_response.status_code == 200 and news_data.get("status") == "ok":
                         articles = news_data.get("articles", [])
                         if articles:
@@ -146,8 +149,7 @@ def process_command():
                     else:
                         response = "Sorry, I couldn't fetch the latest news at the moment."
                 except Exception as e:
-                    response = f"Error fetching news: {e}"  
-
+                    response = f"Error fetching news: {e}"      
         if len(response) == 0:
             response = voice_chat_service(request)
 
@@ -225,7 +227,7 @@ def login():
 
         token = generate_jwt_token('This is the secret', user)
 
-        return jsonify({"message": "Login successful","isSuccess":True, 'accessToken':token}), 200
+        return jsonify({"message": "Login successful","isSuccess":True, 'accessToken':token, 'username':username}), 200
     else:
         # Invalid credentials
         return jsonify({"error": "Invalid username or password"}), 401
