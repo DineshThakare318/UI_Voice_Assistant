@@ -3,9 +3,11 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, {useEffect, useState} from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 export default function Home() {
   const [username, setUsername] = useState("") 
   const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter();
   const handleLogin = async ()=>{
   try{ 
@@ -17,8 +19,16 @@ export default function Home() {
       router.push("/home")
     }
   }catch(e:any){
-    alert(e.response.data.error)
-  }
+    if(e?.response?.status ==401){
+      alert(e?.response?.data?.error)
+    }
+    else if(e?.response?.status ==400){
+      alert(e?.response?.data?.error)
+    }
+    else{
+    alert("you are offline")
+     }
+     }
   }
 
   return (
@@ -38,13 +48,18 @@ export default function Home() {
             onChange={(e:any)=>setUsername(e.target.value)}
             placeholder="Username"
           />
+            <div className="relative flex border-b-2  border-purple-300  px-4  w-[70%]">
           <input
-            className="border-b-2 outline-none border-purple-300  px-4 py-2 w-[70%]"
-            type="password"
+            className=" outline-none py-2"
+            type={showPassword? "text" :"password"}
             value={password}
             onChange={(e:any)=>setPassword(e.target.value)}
             placeholder="Password"
             />
+              <div className="cursor-pointer pt-2 " onClick={()=>setShowPassword(!showPassword)}>
+              {showPassword ? <p className="hover:bg-slate-200 rounded-full p-1"><FaEye /> </p> : <p className="hover:bg-slate-200 rounded-full p-1"> <FaEyeSlash /> </p> 
+              } </div>
+             </div>
            <p className="flex justify-start text-[13px] text-start hover:underline cursor-pointer pt-1 pr-32">Forgot Password?</p>
           <button onClick={handleLogin} className="h-10 rounded-lg hover:bg-blue-400 hover:text-white w-[70%] border border-purple-300 mt-5 mb-3">Login</button>
            <div className="flex justify-center w-[80%] pb-3">           

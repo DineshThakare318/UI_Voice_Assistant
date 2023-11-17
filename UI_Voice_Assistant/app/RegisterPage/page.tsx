@@ -3,11 +3,13 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, {  useState } from "react";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 export default function RegisterPage() {
 
   const [username, setUsername] = useState("") 
   const [password, setPassword] = useState("")
   const [email, setEmail] = useState("") 
+  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter(); 
   const handleRegister =async ()=>{
      try{
@@ -15,12 +17,18 @@ export default function RegisterPage() {
         if(response.data){
           alert(response.data.message)
         }
+        // alert(e.response.data.error)
         if(response.status == 200){
                router.push("/")
         }
      }catch(e:any){
-    alert(e.response.data.error)
+      if(e?.response?.status == 400 || e?.response?.status ==401) {
+        alert(e.response.data.error)
+      }
+      else{
+      alert("you are offline")
      }
+    }
   }
 
 
@@ -43,15 +51,22 @@ export default function RegisterPage() {
             id=""
             placeholder="Username"
           />
+          <div className="flex border-b-2  border-purple-300  px-4 py-2 w-[70%]">
           <input
-            className="border-b-2 outline-none border-purple-300  px-4 py-2 w-[70%]"
-            type="password"
+            className="outline-none"
+            type={showPassword? "text" : "password"}
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
             name=""
             id=""
             placeholder="Password"
             />
+            <div className="pt-1" onClick={()=>setShowPassword(!showPassword)}>
+              {showPassword? <p className="hover:bg-slate-200 p-1 rounded-full"><FaEye /></p>: <p className="hover:bg-slate-200 p-1 rounded-full"><FaEyeSlash /></p>
+
+              }
+            </div>
+            </div>
               <input
             className="border-b-2 outline-none border-purple-300  px-4 py-2 w-[70%]"
             type="text"
