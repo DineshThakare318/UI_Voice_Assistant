@@ -30,7 +30,7 @@ const  ChatHistory =()=> {
       <div className="flex flex-col h-screen pt-3">
       
         <div className="flex gap-96 pb-3 items-center ">
-          <Link href="/"><BiLeftArrowAlt className="h-6 w-40 " /></Link>
+          <Link href="/home"><BiLeftArrowAlt className="h-6 w-40 " /></Link>
         <p className="flex justify-center items-center pl-14 text-emerald-950 text-[25px] ">Chat History</p>
           </div>
         <div className="flex justify-center h-5/6 ">  

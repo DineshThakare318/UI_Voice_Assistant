@@ -12,8 +12,11 @@ export default function Home() {
   const handleLogin = async ()=>{
   try{ 
       const response = await axios.post("http://127.0.0.1:5000/login",{username,password})
+      console.log("RRRRRRRRR",response);
     if(response.data.isSuccess){
       localStorage.setItem('accessToken', response.data.accessToken)
+      localStorage.setItem('username',response.data.username)
+
     }
     if(response.status == 200) {
       router.push("/home")
@@ -32,8 +35,7 @@ export default function Home() {
   }
 
   return (
-    // <main className="flex flex-col items-center justify-between h-screen bg-[url('/bgAI2.jpg')] bg-no-repeat">
-      <div className="w-full h-full flex justify-center items-center bg-[url('/bgAI2.jpg')] bg-no-repeat bg-cover">
+     <div className="w-full h-full flex justify-center items-center bg-[url('/bgAI2.jpg')] bg-no-repeat bg-cover">
       <div className="flex justify-center border border-black w-[35%] py-9 bg-purple-400 rounded-xl">
       <div className="flex flex-col w-[75%] h-[60%] border border-black rounded-lg bg-white">
           <div className="py-5">
@@ -42,13 +44,13 @@ export default function Home() {
             </div>          
         <div className="flex flex-col items-center justify-center  ">
             <input
-            className="border-b-2 outline-none border-purple-300 px-4 py-2 mb-2 w-[70%]"
+            className="border-b-2 outline-none border-purple-300 px-4 py-2 mb-2 w-[76%]"
             type="text"
             value={username}
             onChange={(e:any)=>setUsername(e.target.value)}
             placeholder="Username"
           />
-            <div className="relative flex border-b-2  border-purple-300  px-4  w-[70%]">
+            <div className="relative flex border-b-2  border-purple-300  px-4  w-[76%]">
           <input
             className=" outline-none py-2"
             type={showPassword? "text" :"password"}

@@ -23,11 +23,11 @@ const VoiceAssistant = () => {
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     window.location.reload();
-  //   }, 60000);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      window.location.reload();
+    }, 90000);
+  }, []);
 
   async function chatGPT3(message: any) {
     try {
@@ -124,10 +124,14 @@ const router = useRouter()
 
   return (
     <div className="my-2 flex flex-col h-full w-3/6 px-3  bg-green-100 rounded-lg overflow-hidden relative">
+     <div className="py-2 px-4  absolute top-2 left-2">
+      <p>Welcome,</p>
+      <p className="">{localStorage.getItem("username")}</p>
+     </div>
       <div onClick={()=>{
         localStorage.setItem("accessToken","")
         check()
-      }} className=" py-2 px-4 w-fit absolute top-2 right-2 "> <AiOutlineLogout /> </div>
+      }} className=" py-2 px-4 w-fit absolute top-2 right-2 " title="logout"> <AiOutlineLogout /> </div>
       <div className="h-[70%] max-h-[70%]">
         <div className="flex justify-center items-center gap-2 pt-6 text-[30px] pl-16">
           <div className="">Your</div>

@@ -43,7 +43,7 @@ export default function RegisterPage() {
             </div>          
         <div className="flex flex-col items-center justify-center  ">
             <input
-            className="border-b-2 outline-none border-purple-300 px-4 py-2 mb-2 w-[70%]"
+            className="border-b-2 outline-none border-purple-300 px-4 py-2 mb-2 w-[76%]"
             type="text"
             value={username}
             onChange={(e)=>setUsername(e.target.value)}
@@ -51,9 +51,9 @@ export default function RegisterPage() {
             id=""
             placeholder="Username"
           />
-          <div className="flex border-b-2  border-purple-300  px-4 py-2 w-[70%]">
+          <div className="flex border-b-2   border-purple-300 mb-2 py-2 w-[76%] ">
           <input
-            className="outline-none"
+            className="outline-none pl-4"
             type={showPassword? "text" : "password"}
             value={password}
             onChange={(e)=>setPassword(e.target.value)}
@@ -61,14 +61,14 @@ export default function RegisterPage() {
             id=""
             placeholder="Password"
             />
-            <div className="pt-1" onClick={()=>setShowPassword(!showPassword)}>
-              {showPassword? <p className="hover:bg-slate-200 p-1 rounded-full"><FaEye /></p>: <p className="hover:bg-slate-200 p-1 rounded-full"><FaEyeSlash /></p>
+            <div className="flex pt-1 " onClick={()=>setShowPassword(!showPassword)}>
+              {showPassword? <p className="hover:bg-slate-200 p-1 rounded-full"><FaEye  className="p-0 m-0"/></p>: <p className="hover:bg-slate-200 p-1 rounded-full"><FaEyeSlash className="p-0 m-0"/></p>
 
               }
             </div>
             </div>
               <input
-            className="border-b-2 outline-none border-purple-300  px-4 py-2 w-[70%]"
+            className="border-b-2 outline-none border-purple-300  px-4 py-2 w-[76%]"
             type="text"
             value={email}
             onChange={(e)=>setEmail(e.target.value)}

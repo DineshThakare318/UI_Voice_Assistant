@@ -24,6 +24,7 @@
     "react-icons": "^4.11.0",
     "react-player": "^2.13.0",
     "react-speech-recognition": "^3.10.0",
+    "react-tooltip": "^5.23.0",
     "recoil": "^0.7.7",
     "saas": "^1.0.0",
     "socket.io-client": "^4.7.2",
