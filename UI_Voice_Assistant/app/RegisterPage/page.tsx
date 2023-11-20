@@ -4,7 +4,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, {  useState } from "react";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-export default function RegisterPage() {
+interface props{
+  handleSubmit:any
+}
+const  RegisterPage =()=> {
 
   const [username, setUsername] = useState("") 
   const [password, setPassword] = useState("")
@@ -33,9 +36,9 @@ export default function RegisterPage() {
 
 
   return (
-    <div className="w-full h-full flex justify-center items-center bg-[url('/bgAI2.jpg')] bg-no-repeat bg-cover">
+    <div className="w-full h-full flex justify-center items-center bg-no-repeat bg-cover">
       
-      <div className="flex justify-center border border-black w-[30%] py-8 bg-purple-400 rounded-lg ">
+      <div className="flex justify-center border border-black w-[30%] py-8 bg-white rounded-lg ">
       <div className="flex flex-col w-[85%] h-[60%] border border-black rounded-lg bg-white">
           <div className="py-5">
           <p className="flex justify-center text-2xl font-bold mb-4 text-center text-green-700">Register</p>
@@ -77,14 +80,15 @@ export default function RegisterPage() {
             placeholder="E-mail"
             
             />
-          <button className="h-10 rounded-lg hover:bg-blue-400 w-[70%] border border-purple-300 mt-5 mb-3 hover:text-white" onClick={handleRegister}>Register</button>
-           <div className="w-[60%] pb-3">
+          <button className="h-10 rounded-lg bg-emerald-500 w-[70%]  mt-5 mb-3 text-white font-bold" onClick={handleRegister}>Register</button>
+           {/* <div className="w-[60%] pb-3">
            <p >Already have an account</p>
            <Link className="flex hover:text-blue-400 cursor-pointer text-center justify-center text-blue-700 underline"  href={"/"}>Log in here</Link>
-            </div>
+            </div> */}
         </div>
       </div>
     </div>
     </div>
   );
 }
+export default RegisterPage

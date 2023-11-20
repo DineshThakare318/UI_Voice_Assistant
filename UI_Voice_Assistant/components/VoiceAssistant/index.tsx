@@ -203,7 +203,7 @@ const router = useRouter()
                 }}
               >
                 <BsFillMicFill
-                  className={`text-2xl  ${
+                  className={`text-2xl   ${
                     listening ? "text-green-500" : "text-[#808080]"
                   }`}
                 />

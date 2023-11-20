@@ -1,76 +1,200 @@
-"use client"
+"use client";
+import LoginPage from "@/components/LoginPage";
 import axios from "axios";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, {useEffect, useState} from "react";
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import "../components/VoiceAssistant/style.css";
+import RegisterPage from "./RegisterPage/page";
+import { BiLeftArrowAlt } from "react-icons/bi";
 export default function Home() {
-  const [username, setUsername] = useState("") 
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const router = useRouter();
-  const handleLogin = async ()=>{
-  try{ 
-      const response = await axios.post("http://127.0.0.1:5000/login",{username,password})
-      console.log("RRRRRRRRR",response);
-    if(response.data.isSuccess){
-      localStorage.setItem('accessToken', response.data.accessToken)
-      localStorage.setItem('username',response.data.username)
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showLoginPage, setShowLoginPage] = useState(false);
+  const [showRegisterPage, setShowRegisterPage] = useState(false);
+  const [showServices, setShowServices] = useState(false);
 
+  const router = useRouter();
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post("http://127.0.0.1:5000/login", {
+        username,
+        password,
+      });
+      if (response.data.isSuccess) {
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("username", response.data.username);
+      }
+      if (response.status == 200) {
+        router.push("/home");
+      }
+    } catch (e: any) {
+      if (e?.response?.status == 401) {
+        alert(e?.response?.data?.error);
+      } else if (e?.response?.status == 400) {
+        alert(e?.response?.data?.error);
+      } else {
+        alert("you are offline");
+      }
     }
-    if(response.status == 200) {
-      router.push("/home")
-    }
-  }catch(e:any){
-    if(e?.response?.status ==401){
-      alert(e?.response?.data?.error)
-    }
-    else if(e?.response?.status ==400){
-      alert(e?.response?.data?.error)
-    }
-    else{
-    alert("you are offline")
-     }
-     }
-  }
+  };
 
   return (
-     <div className="w-full h-full flex justify-center items-center bg-[url('/bgAI2.jpg')] bg-no-repeat bg-cover">
-      <div className="flex justify-center border border-black w-[35%] py-9 bg-purple-400 rounded-xl">
-      <div className="flex flex-col w-[75%] h-[60%] border border-black rounded-lg bg-white">
-          <div className="py-5">
-          <p className="flex justify-center text-2xl font-bold mb-4 text-center text-green-700">Login </p>
-          <p className="flex  border-b border-gray-400 w-full "></p>
-            </div>          
-        <div className="flex flex-col items-center justify-center  ">
-            <input
-            className="border-b-2 outline-none border-purple-300 px-4 py-2 mb-2 w-[76%]"
-            type="text"
-            value={username}
-            onChange={(e:any)=>setUsername(e.target.value)}
-            placeholder="Username"
-          />
-            <div className="relative flex border-b-2  border-purple-300  px-4  w-[76%]">
-          <input
-            className=" outline-none py-2"
-            type={showPassword? "text" :"password"}
-            value={password}
-            onChange={(e:any)=>setPassword(e.target.value)}
-            placeholder="Password"
-            />
-              <div className="cursor-pointer pt-2 " onClick={()=>setShowPassword(!showPassword)}>
-              {showPassword ? <p className="hover:bg-slate-200 rounded-full p-1"><FaEye /> </p> : <p className="hover:bg-slate-200 rounded-full p-1"> <FaEyeSlash /> </p> 
-              } </div>
-             </div>
-           <p className="flex justify-start text-[13px] text-start hover:underline cursor-pointer pt-1 pr-32">Forgot Password?</p>
-          <button onClick={handleLogin} className="h-10 rounded-lg hover:bg-blue-400 hover:text-white w-[70%] border border-purple-300 mt-5 mb-3">Login</button>
-           <div className="flex justify-center w-[80%] pb-3">           
-          <p className="mr-3">Don`t have an account?<Link href={"/RegisterPage"} className="hover:text-blue-400 cursor-pointer underline text-blue-700">{"  "}SignUp</Link></p>
-            </div>
+    // bg-[url('/bgAI2.jpg')]
+    <div className=" h-screen overflow-y-scroll w-full bg-slate-900 bg-cover">
+      <div className="flex justify-between w-full h-28 bg-emerald-500 ">
+        <Image
+          className=""
+          src={"/virtualAssistantlogo.png"}
+          alt="fdsf"
+          width={130}
+          height={20}
+        ></Image>
+        <p className="flex  items-center pl-44  text-[40px] font-sans font-semibold">
+          Your Virtual Assistant{" "}
+        </p>
+        <div className="nav  flex items-end pb-6  pr-7 space-x-7 ">
+          <div
+            className="hover:underline cursor-pointer hover:text-sky-200"
+            onClick={() => {
+              setShowLoginPage(true),
+                setShowRegisterPage(false),
+                setShowServices(false);
+            }}
+          >
+            Log in
+          </div>
+          <div
+            className="hover:underline cursor-pointer hover:text-sky-200"
+            onClick={() => {
+              setShowRegisterPage(true),
+                setShowLoginPage(false),
+                setShowServices(false);
+            }}
+          >
+            Sign up
+            {/* <Link href={"/RegisterPage"}>Sign up</Link>  */}
+          </div>
+          <div
+            className="hover:underline cursor-pointer hover:text-sky-200"
+            onClick={() => {
+              setShowServices(true),
+                setShowLoginPage(false),
+                setShowRegisterPage(false);
+            }}
+          >
+            Our services
+          </div>
         </div>
       </div>
+      <div className="w-full ">
+        {showLoginPage ? (
+          <div>
+            <p
+              className="flex justify-start text-white px-2 pt-5 cursor-pointer"
+              onClick={() => setShowLoginPage(false)}
+            >
+              <BiLeftArrowAlt className="h-6 w-40 " />
+            </p>
+            <div className="pl-[475px] pt-3">
+              <LoginPage />
+            </div>
+          </div>
+        ) : showRegisterPage ? (
+          <div>
+            <p
+              className="flex justify-start text-white px-2 pt-5 cursor-pointer"
+              onClick={() => setShowRegisterPage(false)}
+            >
+              <BiLeftArrowAlt className="h-6 w-40 " />
+            </p>
+            <div className=" pt-4">
+              <RegisterPage />
+            </div>
+          </div>
+        ) : showServices ? (
+          <div>
+            <p
+              className="flex justify-start text-white px-2 pt-5 cursor-pointer"
+              onClick={() => setShowServices(false)}
+            >
+              <BiLeftArrowAlt className="h-6 w-40 " />
+            </p>
+            <div className="flex justify-start items-center text-white">
+              <div className="flex flex-col justify-center items-center space-y-2">
+                <p className="text-[45px] ">What We Offer</p>
+                <div className="w-[50%] space-y-2">
+                  <p className=" ">
+                    {" "}
+                    <b>1. Intelligent Voice Recognition:</b>
+                    {"   "} Communicate naturally with our cutting-edge voice
+                    recognition technology. Execute commands, ask questions, and
+                    get instant responses.
+                    <br />
+                  </p>
+                  <p className=" ">
+                    {" "}
+                    <b>2. Personalized Assistance: </b>
+                    {"  "}Tailored to your preferences, our virtual assistant
+                    learns and adapts to your unique needs over time. Increase
+                    productivity with personalized recommendations and proactive
+                    assistance.
+                    <br />{" "}
+                  </p>
+                  <p className=" ">
+                    {" "}
+                    <b>3. Smart Home Integration:</b>
+                    {"   "}
+                    Control your smart home devices effortlessly through voice
+                    commands. Create custom routines to simplify your daily
+                    activities.
+                    <br />{" "}
+                  </p>
+                  <p className=" ">
+                    <b>4. Seamless Connectivity:</b>
+                    {"   "} Connect with your virtual assistant across devices
+                    for a unified experience. Access information, set reminders,
+                    and manage tasks from your smartphone, tablet, or computer.
+                    <br />{" "}
+                  </p>
+                  <p className=" ">
+                    {" "}
+                    <b>5. Continuous Improvement:</b>
+                    {"   "}
+                    Our virtual assistant is constantly evolving with regular
+                    updates. Enjoy the latest features and enhancements to stay
+                    ahead in the world of AI technology.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="flex ">
+            {" "}
+            <div className="flex  w-full">
+            <div className="flex justify-start pl-16 pt-32 overflow-hidden">
+              <div className="flex flex-col">
+              <p className=" font-bold text-white text-[40px] font-sans">
+                {" "}
+                Welcome to Your Virtual Assistant!{" "}
+              </p>
+              <p className=" text-white w-1/2 font-sans ">
+                Are you ready to revolutionize the way you interact with
+                technology? Our Virtual Assistant is here to make your life
+                easier, more efficient, and seamlessly connected. Imagine a
+                world where tasks are completed with just the sound of your
+                voice - welcome to the future.
+              </p>
+              </div>
+            </div>
+          </div>
+          </div>
+        )}
+      </div>
     </div>
-    </div>
-    // </main>
   );
 }
