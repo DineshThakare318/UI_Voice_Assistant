@@ -123,7 +123,7 @@ const router = useRouter()
   }, []);
 
   return (
-    <div className="my-2 flex flex-col h-full w-3/6 px-3  bg-green-100 rounded-lg overflow-hidden relative">
+    <div className="my-2 flex flex-col h-full w-3/6 px-3  bg-white rounded-lg overflow-hidden relative">
      <div className="py-2 px-4  absolute top-2 left-2">
       <p>Welcome,</p>
       <p className="">{localStorage.getItem("username")}</p>

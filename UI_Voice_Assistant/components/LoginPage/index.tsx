@@ -42,13 +42,13 @@ const  LoginPage =()=> {
             </div>          
         <div className="flex flex-col items-center justify-center  ">
             <input
-            className="border-b-2 outline-none border-purple-300 px-4 py-2 mb-2 w-[76%]"
+            className="border-b-2 outline-none border-gray-500 px-4 py-2 mb-2 w-[76%]"
             type="text"
             value={username}
             onChange={(e:any)=>setUsername(e.target.value)}
             placeholder="Username"
           />
-            <div className="relative flex border-b-2  border-purple-300  pl-4  w-[76%]">
+            <div className="relative flex border-b-2  border-gray-500  pl-4  w-[76%]">
           <input
             className=" outline-none py-2 m-0 w-44"
             type={showPassword? "text" :"password"}
@@ -61,7 +61,7 @@ const  LoginPage =()=> {
               } </div>
              </div>
            <p className="flex justify-start text-[13px] text-start hover:underline cursor-pointer pt-1 pr-32 pl-12">Forgot Password?</p>
-          <button onClick={handleLogin} className="h-10 rounded-lg hover:bg-blue-400 hover:text-white w-[70%] border border-purple-300 mt-5 mb-3">Login</button>
+          <button onClick={handleLogin} className="h-10 rounded-lg  font-bold text-white w-[70%] border  mt-5 mb-3 bg-emerald-500  hover:bg-emerald-600">Login</button>
            {/* <div className="flex justify-center w-[80%] pb-3">           
           <p className="mr-3">Don`t have an account?<Link href={"/RegisterPage"} className="hover:text-blue-400 cursor-pointer underline text-blue-600">{"  "}SignUp</Link></p>
             </div> */}

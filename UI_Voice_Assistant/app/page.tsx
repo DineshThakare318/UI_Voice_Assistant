@@ -44,8 +44,8 @@ export default function Home() {
 
   return (
     // bg-[url('/bgAI2.jpg')]
-    <div className=" h-screen overflow-y-scroll w-full bg-slate-900 bg-cover">
-      <div className="flex justify-between w-full h-28 bg-emerald-500 ">
+    <div className=" h-screen overflow-y-scroll w-full bg-slate-800 bg-cover">
+      <div className="flex justify-between w-full h-28 bg-emerald-500 p-0 m-0">
         <Image
           className=""
           src={"/virtualAssistantlogo.png"}
@@ -195,6 +195,13 @@ export default function Home() {
           </div>
         )}
       </div>
+      {/* <div>
+        <Image src={"/bg1.jpg"}
+        alt="pic of AI"
+       height={100}
+        width={150}
+        ></Image>
+      </div> */}
     </div>
   );
 }

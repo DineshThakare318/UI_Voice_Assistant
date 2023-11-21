@@ -7,7 +7,8 @@ import React, { useEffect, useState } from "react";
 export default function Home() {
 
   return (
-    <div className="w-full h-full flex justify-center items-center py-4 bg-[url('/bgAI2.jpg')] bg-cover">
+    // [url('/bgAI2.jpg')]
+    <div className="w-full h-full flex justify-center items-center py-4 bg-slate-900 bg-cover">
       <VoiceAssistant />
     </div>
   );

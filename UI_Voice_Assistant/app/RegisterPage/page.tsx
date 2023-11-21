@@ -46,7 +46,7 @@ const  RegisterPage =()=> {
             </div>          
         <div className="flex flex-col items-center justify-center  ">
             <input
-            className="border-b-2 outline-none border-purple-300 px-4 py-2 mb-2 w-[76%]"
+            className="border-b-2 outline-none border-gray-500 px-4 py-2 mb-2 w-[76%]"
             type="text"
             value={username}
             onChange={(e)=>setUsername(e.target.value)}
@@ -54,7 +54,7 @@ const  RegisterPage =()=> {
             id=""
             placeholder="Username"
           />
-          <div className="flex border-b-2   border-purple-300 mb-2 py-2 w-[76%] ">
+          <div className="flex border-b-2   border-gray-500 mb-2 py-2 w-[76%] ">
           <input
             className="outline-none pl-4"
             type={showPassword? "text" : "password"}
@@ -71,7 +71,7 @@ const  RegisterPage =()=> {
             </div>
             </div>
               <input
-            className="border-b-2 outline-none border-purple-300  px-4 py-2 w-[76%]"
+            className="border-b-2 outline-none border-gray-500  px-4 py-2 w-[76%]"
             type="text"
             value={email}
             onChange={(e)=>setEmail(e.target.value)}
@@ -80,7 +80,7 @@ const  RegisterPage =()=> {
             placeholder="E-mail"
             
             />
-          <button className="h-10 rounded-lg bg-emerald-500 w-[70%]  mt-5 mb-3 text-white font-bold" onClick={handleRegister}>Register</button>
+          <button className="h-10 rounded-lg bg-emerald-500 w-[70%] hover:bg-emerald-600  mt-5 mb-3 text-white font-bold" onClick={handleRegister}>Register</button>
            {/* <div className="w-[60%] pb-3">
            <p >Already have an account</p>
            <Link className="flex hover:text-blue-400 cursor-pointer text-center justify-center text-blue-700 underline"  href={"/"}>Log in here</Link>
