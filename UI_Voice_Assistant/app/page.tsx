@@ -2,13 +2,13 @@
 import LoginPage from "@/components/LoginPage";
 import axios from "axios";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "../components/VoiceAssistant/style.css";
 import RegisterPage from "./RegisterPage/page";
 import { BiLeftArrowAlt } from "react-icons/bi";
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Home() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -41,6 +41,16 @@ export default function Home() {
       }
     }
   };
+
+  const greeting = `Are you ready to revolutionize the way you interact with technology? Our Virtual Assistant is here to make your life easier, more efficient, and seamlessly connected. Imagine a world where tasks are completed with just the sound of your voice - welcome to the future.`;
+  const [showText, setShowText] = useState(false);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowText(true);
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     // bg-[url('/bgAI2.jpg')]
@@ -176,22 +186,40 @@ export default function Home() {
           <div className="flex ">
             {" "}
             <div className="flex  w-full">
-            <div className="flex justify-start pl-16 pt-32 overflow-hidden">
-              <div className="flex flex-col">
-              <p className=" font-bold text-white text-[40px] font-sans">
-                {" "}
-                Welcome to Your Virtual Assistant!{" "}
-              </p>
-              <p className=" text-white w-1/2 font-sans ">
-                Are you ready to revolutionize the way you interact with
+              <div className="flex justify-start pl-16 pt-32 overflow-hidden">
+                <div className="flex flex-col">
+                  <p className=" font-bold text-white text-[40px] font-sans">
+                    {" "}
+                    Welcome to Your Virtual Assistant!{" "}
+                  </p>
+                  <p className=" text-white w-1/2 font-sans !max-w-[40%] flex justify-start items-center flex-wrap">
+                    {/* Are you ready to revolutionize the way you interact with
                 technology? Our Virtual Assistant is here to make your life
                 easier, more efficient, and seamlessly connected. Imagine a
                 world where tasks are completed with just the sound of your
-                voice - welcome to the future.
-              </p>
+                voice - welcome to the future. */}
+                    {greeting.split(" ").map((ele: any, index: number) => (
+                      <span
+                        className={`transition-opacity flex justify-center items-center duration-500 mx-[2px] ${
+                          showText ? "opacity-100" : "opacity-0"
+                        }`}
+                        style={{ transitionDelay: `${index * 100}ms` }}
+                        key={index}
+                      >
+                        {ele}
+                        <>
+                          {index === greeting.split(" ").length - 1 && (
+                            <span className="w-2 h-[80%] m-auto cursor-blinker bg-white text-white">
+                              .
+                            </span>
+                          )}
+                        </>
+                      </span>
+                    ))}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
           </div>
         )}
       </div>

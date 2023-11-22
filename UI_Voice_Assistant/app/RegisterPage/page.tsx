@@ -1,8 +1,11 @@
 "use client"
+import CustomToastEducation from "@/components/Toast/CustomToastEducation";
+import { ToastTypes } from "@/enum/ToastTypes";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, {  useState } from "react";
+import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 interface props{
   handleSubmit:any
@@ -14,25 +17,59 @@ const  RegisterPage =()=> {
   const [email, setEmail] = useState("") 
   const [showPassword, setShowPassword] = useState(false)
   const router = useRouter(); 
+  const [emailError, setEmailError] = useState('');
+
+  const handleEmailChange = (e:any) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(value)) {
+      setEmailError('Please enter a valid email address');
+    } else {
+      setEmailError('');
+    }
+  };
+
   const handleRegister =async ()=>{
      try{
         const response = await axios.post("http://127.0.0.1:5000/register",{username,password,email})
         if(response.data){
-          alert(response.data.message)
+          showAlert(response.data.message,ToastTypes.SUCCESS)
         }
-        // alert(e.response.data.error)
         if(response.status == 200){
                router.push("/")
         }
      }catch(e:any){
       if(e?.response?.status == 400 || e?.response?.status ==401) {
-        alert(e.response.data.error)
+        showAlert(e?.response?.data?.error,ToastTypes.ERROR)
       }
       else{
-      alert("you are offline")
+      showAlert("you are offline")
      }
     }
   }
+
+  const showAlert = (message: any, type?: any) => {
+    toast((t) => (
+      <CustomToastEducation
+        type={type}
+        title=""
+        message={message}
+        t={t}
+        singleLineMessage
+        autoHide
+      />
+    )
+    , {
+      style: {
+        background: 'transparent',
+        width: 'auto',
+        // boxShadow: 'none', // Remove the box shadow
+      },
+  });
+  };
 
 
   return (
@@ -72,14 +109,14 @@ const  RegisterPage =()=> {
             </div>
               <input
             className="border-b-2 outline-none border-gray-500  px-4 py-2 w-[76%]"
-            type="text"
+            type="email"
             value={email}
-            onChange={(e)=>setEmail(e.target.value)}
+            onChange={handleEmailChange}
             name=""
             id=""
             placeholder="E-mail"
-            
             />
+             {emailError && <p className="text-red-500 text-[14px]">{emailError}</p>}
           <button className="h-10 rounded-lg bg-emerald-500 w-[70%] hover:bg-emerald-600  mt-5 mb-3 text-white font-bold" onClick={handleRegister}>Register</button>
            {/* <div className="w-[60%] pb-3">
            <p >Already have an account</p>

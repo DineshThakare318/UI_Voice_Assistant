@@ -151,7 +151,7 @@ const router = useRouter()
           {transcript && (
             <div className="font-bold text-center">{transcript}</div>
           )}
-          {userOutput.includes("https") && userOutput.includes("youtube") ? (
+          {userOutput.includes("https") && userOutput.startsWith("https://www.youtube.com/") ? (
             <div className="text-center">Playing..</div>
           ) : userOutput.includes("https") ? (
             <div className="text-black !overflow-y-scroll ">

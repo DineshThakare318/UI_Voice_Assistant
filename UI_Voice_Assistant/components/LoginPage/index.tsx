@@ -3,6 +3,9 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
+import CustomToastEducation from '../Toast/CustomToastEducation'
+import toast from 'react-hot-toast'
+import { ToastTypes } from '@/enum/ToastTypes'
 
 const  LoginPage =()=> {
     const [username, setUsername] = useState("") 
@@ -13,6 +16,7 @@ const  LoginPage =()=> {
     try{ 
         const response = await axios.post("http://127.0.0.1:5000/login",{username,password})
       if(response.data.isSuccess){
+        showAlert(response?.data?.message,ToastTypes.SUCCESS)
         localStorage.setItem('accessToken', response.data.accessToken)
         localStorage.setItem('username',response.data.username)
   
@@ -22,16 +26,38 @@ const  LoginPage =()=> {
       }
     }catch(e:any){
       if(e?.response?.status ==401){
-        alert(e?.response?.data?.error)
+        showAlert(e?.response?.data?.error,ToastTypes.ERROR)
       }
       else if(e?.response?.status ==400){
-        alert(e?.response?.data?.error)
+        showAlert(e?.response?.data?.error,ToastTypes.ERROR)
       }
       else{
       alert("you are offline")
        }
        }
     }
+
+    const showAlert = (message: any, type?: any) => {
+      toast((t) => (
+        <CustomToastEducation
+          type={type}
+          title=""
+          message={message}
+          t={t}
+          singleLineMessage
+          autoHide
+        />
+      ), {
+        style: {
+          background: 'transparent',
+          width: 'auto', 
+          boxShadow: 'none', 
+}
+          
+    });
+    };
+
+
   return (
     <div>
         <div className="flex justify-center border border-black w-[45%] py-9 bg-white rounded-xl">

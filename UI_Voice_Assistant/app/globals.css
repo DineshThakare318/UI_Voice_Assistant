@@ -31,11 +31,22 @@
   transform: scale(2);
 }
 
-@keyframes zoom {
-  from {
-      transform: scale(1);
+
+
+
+.cursor-blinker{
+  animation: blink 1s linear infinite;
+  opacity: 1;
+}
+
+@keyframes blink {
+  0%{
+    opacity: 1;
   }
-  to {
-      transform:scale(2);
+  50%{
+    opacity: 0;
+  }
+  100%{
+    opacity: 1;
   }
 }
