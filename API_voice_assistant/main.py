@@ -185,6 +185,31 @@ def get_chats():
 client = MongoClient("mongodb+srv://dineshthakare0319:3PRTY9FX07dQtgF1@cluster0.sgpxqmf.mongodb.net/Voice_Assistant?retryWrites=true&w=majority")
 db = client["Voice_Assistant"] 
 users_collection = db["users"]
+feedback_collection = db["feedback"]
+
+#Feedback
+
+@app.route("/submit-feedback", methods=["POST"])
+def submit_feddback():
+    data = request.get_json()
+
+    if "response" not in data or "feedback" not in data:
+        return jsonify({"error": "Both response and feedback are required"}), 400
+
+    response = data["response"]
+    feedback = data["feedback"]
+    timestamp = datetime.now()
+
+    feedback_data = {
+        "response": response,
+        "feedback": feedback,
+        "timestamp": timestamp
+    }
+
+    feedback_collection.insert_one(feedback_data)
+
+    return jsonify({"message": "Feedback submitted successfully"}), 200
+
 
 # Register endpoint
 @app.route("/register", methods=["POST"])
@@ -251,7 +276,6 @@ def authorize_request():
         return None
     else:
         return jsonify({'error': 'Invalid or expired token'}), 401
-
 
 
 @app.route("/check", methods=["GET"])
