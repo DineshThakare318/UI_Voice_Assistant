@@ -8,9 +8,9 @@ import React, {  useState } from "react";
 import toast from "react-hot-toast";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 interface props{
-  handleSubmit:any
+  onSuccessRegistration:any
 }
-const  RegisterPage =()=> {
+const  RegisterPage:React.FC<props> =({onSuccessRegistration})=> {
 
   const [username, setUsername] = useState("") 
   const [password, setPassword] = useState("")
@@ -34,13 +34,18 @@ const  RegisterPage =()=> {
 
   const handleRegister =async ()=>{
      try{
+      if(username && password && !emailError){
         const response = await axios.post("http://127.0.0.1:5000/register",{username,password,email})
         if(response.data){
           showAlert(response.data.message,ToastTypes.SUCCESS)
         }
         if(response.status == 200){
-               router.push("/")
-        }
+          onSuccessRegistration()
+        } 
+      }
+      else{
+        showAlert("All fields are required")
+      }
      }catch(e:any){
       if(e?.response?.status == 400 || e?.response?.status ==401) {
         showAlert(e?.response?.data?.error,ToastTypes.ERROR)
@@ -117,7 +122,7 @@ const  RegisterPage =()=> {
             placeholder="E-mail"
             />
              {emailError && <p className="text-red-500 text-[14px]">{emailError}</p>}
-          <button className="h-10 rounded-lg bg-emerald-500 w-[70%] hover:bg-emerald-600  mt-5 mb-3 text-white font-bold" onClick={handleRegister}>Register</button>
+          <button className="h-10 rounded-lg bg-emerald-500 w-[70%] hover:bg-emerald-600  mt-5 mb-3 text-white font-" onClick={handleRegister}>Register</button>
            {/* <div className="w-[60%] pb-3">
            <p >Already have an account</p>
            <Link className="flex hover:text-blue-400 cursor-pointer text-center justify-center text-blue-700 underline"  href={"/"}>Log in here</Link>

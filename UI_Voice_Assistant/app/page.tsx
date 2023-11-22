@@ -52,6 +52,11 @@ export default function Home() {
     return () => clearTimeout(timeout);
   }, []);
 
+
+  const navigateToLogin =()=>{
+    setShowLoginPage(true)
+  } 
+
   return (
     // bg-[url('/bgAI2.jpg')]
     <div className=" h-screen overflow-y-scroll w-full bg-slate-800 bg-cover">
@@ -63,7 +68,7 @@ export default function Home() {
           width={130}
           height={20}
         ></Image>
-        <p className="flex  items-center pl-44  text-[40px] font-sans font-semibold">
+        <p className="flex  items-center pl-44  text-[40px] text-[#333333] font-sans font-semibold">
           Your Virtual Assistant{" "}
         </p>
         <div className="nav  flex items-end pb-6  pr-7 space-x-7 ">
@@ -122,7 +127,7 @@ export default function Home() {
               <BiLeftArrowAlt className="h-6 w-40 " />
             </p>
             <div className=" pt-4">
-              <RegisterPage />
+              <RegisterPage onSuccessRegistration={navigateToLogin}/>
             </div>
           </div>
         ) : showServices ? (
@@ -220,16 +225,17 @@ export default function Home() {
                 </div>
               </div>
             </div>
+            {/* <div className="">
+        <Image src={"/forBg.jpg"}
+        alt="pic of AI"
+       height={1500}
+        width={550}
+        ></Image>
+      </div> */}
           </div>
         )}
       </div>
-      {/* <div>
-        <Image src={"/bg1.jpg"}
-        alt="pic of AI"
-       height={100}
-        width={150}
-        ></Image>
-      </div> */}
+      
     </div>
   );
 }
