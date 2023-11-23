@@ -78,7 +78,7 @@ def process_command():
                 query = command.replace("google search", "")
                 google_search_url = f"https://www.google.com/search?q={query}"
                 webbrowser.open(google_search_url)
-                response = f"Searching Google for: {query}"
+                response = f"Searching Google : {query}"
                 break
             elif "hello" in command:
                 response = "Hello! How can I help you?"
