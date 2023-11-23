@@ -10,37 +10,9 @@ import { BiLeftArrowAlt } from "react-icons/bi";
 import 'react-toastify/dist/ReactToastify.css';
 
 export default function Home() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [showLoginPage, setShowLoginPage] = useState(false);
   const [showRegisterPage, setShowRegisterPage] = useState(false);
   const [showServices, setShowServices] = useState(false);
-
-  const router = useRouter();
-  const handleLogin = async () => {
-    try {
-      const response = await axios.post("http://127.0.0.1:5000/login", {
-        username,
-        password,
-      });
-      if (response.data.isSuccess) {
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("username", response.data.username);
-      }
-      if (response.status == 200) {
-        router.push("/home");
-      }
-    } catch (e: any) {
-      if (e?.response?.status == 401) {
-        alert(e?.response?.data?.error);
-      } else if (e?.response?.status == 400) {
-        alert(e?.response?.data?.error);
-      } else {
-        alert("you are offline");
-      }
-    }
-  };
 
   const greeting = `Are you ready to revolutionize the way you interact with technology? Our Virtual Assistant is here to make your life easier, more efficient, and seamlessly connected. Imagine a world where tasks are completed with just the sound of your voice - welcome to the future.`;
   const [showText, setShowText] = useState(false);

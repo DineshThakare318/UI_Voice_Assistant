@@ -25,10 +25,10 @@ const ChatHistory = () => {
   }, []);
 
   return (
-    <div className="flex flex-col h-screen pt-3 bg-[url('/bg1.jpg')] bg-cover ">
+    <div className="flex flex-col h-screen pt-3 bg-[url('/bgAI2.jpg')] bg-cover ">
       <div className="flex gap-96 pb-3 items-center  ">
         <Link href="/home">
-          <BiLeftArrowAlt className="h-6 w-40 " />
+          <BiLeftArrowAlt className="h-6 w-40 text-white" />
         </Link>
         <p className="flex justify-center items-center pl-14 text-white text-[25px] ">
           Chat History

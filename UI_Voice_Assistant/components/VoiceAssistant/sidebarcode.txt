@@ -1,0 +1,10 @@
+<div className="w-1/6 ">
+       {!isSidebarOpen ? <div className="cursor-pointer flex justify-center items-center" onClick={toggleSidebar}><PiListDuotone /></div> :
+      <div className={` bg-gray-500 py-4 h-full ${isSidebarOpen? "open" : "closed"}`}>
+        <button onClick={()=>setIsSidebarOpen(false)}>close</button>
+      <p>Welcome, {localStorage.getItem("username")}</p>
+      <Link href={"/ChatHistory"}>
+        <p className="cursor-pointer text-sm">Check <b>chat </b> history</p>
+      </Link>
+    </div>}
+    </div>

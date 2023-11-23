@@ -31,3 +31,12 @@
 .custom-toast {
   width: auto !important;
 }
+
+.open {
+  width: full; /* Set the desired width when open */
+}
+
+.closed {
+  width: 0;
+  overflow: hidden;
+}
