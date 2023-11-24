@@ -170,6 +170,10 @@ def process_command():
 def get_chat_History():
     return chat_view.get_chats()
 
+@app.route("/chatSearch" , methods=["GET"])
+def get_chat_Search():
+    return chat_view.get_Search_List()
+
 @app.route("/voicechat", methods=["POST"])
 def chat():
     return chat_view.chat_Voice(request)

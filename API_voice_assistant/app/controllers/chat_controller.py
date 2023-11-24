@@ -1,5 +1,7 @@
 from flask import jsonify, request
 from datetime import datetime, timedelta
+
+import pymongo
 from app import mongo_db
 from dotenv import load_dotenv
 from datetime import datetime
@@ -56,6 +58,18 @@ class ChatController:
             )
         response_data = {"data": chat_list}
         return response_data, 200
+    
+    def get_Search_List(self):
+        chats = mongo_db.chats.find().sort("_id", -1).limit(20)
+        chat_list = []
+        for x in chats:
+            chat_list.append(
+                {
+                    "command": x["command"]
+                }
+            )
+        response_data = {"data" :chat_list}
+        return response_data
 
     # def chat_Voice(self, request):
     #     data = request.get_json()

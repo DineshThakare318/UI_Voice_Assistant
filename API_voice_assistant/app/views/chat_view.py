@@ -14,6 +14,9 @@ class ChatView:
 
     def get_chats(self):
         return jsonify(self.chat_controller.get_chats()), 200
+    
+    def get_Search_List(self):
+        return jsonify(self.chat_controller.get_Search_List()), 200
 
     def chat_Voice(self, request):
         chat = self.chat_controller.chat_Voice(request)
