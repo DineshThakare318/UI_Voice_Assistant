@@ -15,21 +15,24 @@ import { useRouter } from "next/navigation";
 import { AiOutlineLogout } from "react-icons/ai";
 import CustomToastEducation from "../Toast/CustomToastEducation";
 import toast from "react-hot-toast";
+import { ToastTypes } from "@/enum/ToastTypes";
 const VoiceAssistant = () => {
   const [userInput, setUserInput] = useState<any>("");
   const [userOutput, setOutput] = useState<any>("");
+  const [searchList,setSearchlist] = useState<[]>([])
   const {
     transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition,
   } = useSpeechRecognition();
-  console.log("fdgfdgffd", transcript);
   useEffect(() => {
     setTimeout(() => {
-      window.location.reload();
-    }, 90000);
+      // window.location.reload();
+      showSearchList()
+    }, 4000);
   }, []);
+
 
   async function chatGPT3(message: any) {
     try {
@@ -52,7 +55,22 @@ const VoiceAssistant = () => {
       return error;
     }
   }
+  
+  useEffect(()=>{
+    showSearchList()
+  },[])
 
+  async function showSearchList() {
+    try{
+      const response: any = await client.get(`${application.baseUrl}/chatSearch`)
+      setSearchlist(response?.data?.data)
+      console.log("responsechatSearch",response?.data.data);
+    }catch(error:any){
+        console.log(error);
+    }
+    
+  }
+console.log("ssssssssssssssss",searchList);
   const handleTextToSpeech = async (text: string) => {
     try {
       if (text) {
@@ -67,7 +85,7 @@ const VoiceAssistant = () => {
         }
       }
     } catch (e) {
-      showAlert("Your are offline");
+      showAlert("Please provide a valid command.");
     }
   };
 
@@ -88,12 +106,12 @@ const VoiceAssistant = () => {
               speechSynthesis.speak(utterance);
             }
           } catch {
-            showAlert("please give a right command");
+            showAlert("You are offline ",ToastTypes.ERROR);
           }
         });
       }
     } catch (e) {
-      showAlert("You are offline");
+      showAlert("Please provide a valid command.",ToastTypes.ERROR);
     }
   }, [transcript, listening]);
 
@@ -102,6 +120,7 @@ const VoiceAssistant = () => {
       const response = await chatGPT3(userInput);
       setUserInput("");
       setOutput(response.data.response);
+      resetTranscript();
     } catch (error) {
       console.log(error);
     }
@@ -120,7 +139,8 @@ const VoiceAssistant = () => {
           router.push("/");
         }
       } catch (e: any) {
-        showAlert(e.response.data.error);
+        console.log(e);
+        // showAlert(e);
       }
     } else {
       router.push("/");
@@ -151,19 +171,32 @@ const VoiceAssistant = () => {
         
   });
   };
+  const stopTextToSpeech = () => {
+    window.speechSynthesis.cancel();
+  };
 
   return (
     <div className="my-2 flex   h-full w-3/5   bg-white rounded-lg overflow-hidden relative">
-      <div className="flex flex-col  w-1/6 pr-4 bg-gray-800 py-4 h-full text-white px-1">
+      <div className="flex flex-col  w-[25%] pr-2 bg-gray-800 py-4 h-full text-white px-1">
         <div className="px-2">
           Welcome, <br />{" "}
           <p className="text-[#34eb9b] font-bold ">
             {localStorage.getItem("username")}
           </p>
         </div>
-        {/* <div>
-          Today
-        </div> */}
+        <div className="mt-7">
+          <div className="text-gray-300">
+            Today
+          </div>
+        <div className="mt-2 h-2/4 overflow-y-scroll ">
+          {searchList.map((element:any,index:number)=>(
+            <div key={index} >
+              <p className="hover:bg-gray-600  p-1  rounded-md text-[13px] mx-1">{element.command}</p>
+            </div>
+          ))
+
+          }
+        </div></div>
         <div className="bottom-5 absolute ">
           <Link className=" " href={"/ChatHistory"}>
             <p className="cursor-pointer text-[13px] mb-1 hover:bg-slate-700 rounded-lg py-2 px-1 ">
@@ -184,8 +217,8 @@ const VoiceAssistant = () => {
         </div>
         {/* Add any additional sidebar content as needed */}
       </div>
-      <div className="flex flex-col w-3/4  justify-center items-center">
-        <div className="h-[70%] max-h-[70%]  ml-20">
+      <div className="flex flex-col w-3/4  justify-center items-center ">
+        <div className="h-[70%] max-h-[70%]  ">
           <div className="flex justify-center items-center gap-2 pt-6 text-[30px] ">
             <div className="font-bold text-[#333333]">Your</div>
             <div
@@ -202,15 +235,9 @@ const VoiceAssistant = () => {
               <b className="text-orange-400">Assistant</b>
             </div>
           </div>
-          <div className="justify-center  items-center pt-4 max-h-[85%] overflow-y-scroll ">
-            {!userInput && !userOutput ? (
+          <div className="justify-center  items-center pt-4 max-h-[75%] overflow-y-scroll mt-4">
+            {!userOutput ? (
               <div className="flex flex-col justify-center items-center  mt-20  font-bold">
-                {/* <Image
-                  src="/forBgs.jpg" // Update with the path to your logo image
-                  alt="Voice Assistant Logo"
-                  width={100}
-                  height={70}
-                /> */}
                 <div>How can I help you today?</div>
               </div>
             ) : (
@@ -222,15 +249,19 @@ const VoiceAssistant = () => {
             userOutput.startsWith("https://www.youtube.com/") ? (
               <div className="text-center">Playing..</div>
             ) : userOutput.includes("https") ? (
-              <div className="text-black !overflow-y-scroll ">
+              <div className="text-black !overflow-y-scroll  mx-4">
                 <GetFormattedText data={userOutput} />
               </div>
             ) : (
-              <p className="text-center">{userOutput}</p>
-            )}
+              <div>
+              <p className="text-center  mx-4">{userOutput}</p>
+            {userOutput && <div className="text-center cursor-pointer text-gray-400 font-semibold text-[10px] pt-4 start-1" onClick={stopTextToSpeech}>Stop generating a response.</div>}
+              </div>
+            )}   
           </div>
         </div>
-        <div className="flex h-[30%]   ml-16 max-h-[30%] flex-col justify-center items-center mt-16">
+        
+        <div className="flex h-[30%]   max-h-[30%] flex-col justify-center items-center mt-10">
           {listening ? (
             <p className="pb-4">{"Go ahead, I`m listening..."}</p>
           ) : (
@@ -275,7 +306,7 @@ const VoiceAssistant = () => {
                 className={`font-[700] w-fit px-2 h-full ${
                   userInput ? "cursor-pointer" : "cursor-default"
                 }`}
-                onClick={() => handleTextToSpeech(userInput)}
+                onClick={() => {handleTextToSpeech(userInput), resetTranscript}}
                 disabled={userInput.length == 0}
               >
                 <svg

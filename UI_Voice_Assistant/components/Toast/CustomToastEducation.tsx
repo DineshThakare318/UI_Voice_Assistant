@@ -6,52 +6,18 @@ import CheckCircleIcon from "../Icons/CheckCircleIcon";
 type ToatsType = "success" | "error";
 
 interface ICustomToast {
-  /**
-   * A `Toast` object from the `react-hot-toast` library that represents the current toast.
-   */
   t: Toast;
-  /**
-   * A string that indicates the type of the toast, either `success` or `error`.
-   */
   type: ToatsType;
-  /**
-   * An optional string or function that represents the message to be displayed in the toast.
-   */
   message?: string | (() => JSX.Element);
-  /**
-   * A string that represents the title of the toast.
-   */
   title: string;
-  /**
-   * An optional array of objects that represent buttons to be displayed in the toast.
-   * Each object has a `label` string and an optional `onClick` function. If `onClick` is
-   * omitted, `dismissToast` will be called by default when clicked on the button.
-   *
-   * If buttons are not passed as prop, default `Close` button is rendered.
-   */
   buttons?: {
     label: string;
     onClick?: () => void;
   }[];
-
-  /**
- * A custom toast notification that displays a message without title.
- * It uses the `react-hot-toast` library and two custom icons: `CheckCircleIcon` and `ExclamationIcon`.
- */
   singleLineMessage?: boolean;
-
-
-    /**
- * For hideing the toast automatically after given time interval.
- * It uses the `react-hot-toast` library and two custom icons: `CheckCircleIcon` and `ExclamationIcon`.
- */
-  autoHide?:boolean;
+  autoHide?: boolean;
 }
 
-/**
- * A custom toast notification that displays a message with a title and some optional buttons.
- * It uses the `react-hot-toast` library and two custom icons: `CheckCircleIcon` and `ExclamationIcon`.
- */
 const CustomToastEducation: React.FC<ICustomToast> = ({
   t,
   type,
@@ -59,20 +25,17 @@ const CustomToastEducation: React.FC<ICustomToast> = ({
   title,
   buttons,
   singleLineMessage,
-  autoHide
+  autoHide,
 }) => {
-  /**
-   * Dismisses the current toast.
-   */
   const dismissToast = () => {
     toast.dismiss(t.id);
   };
 
-  useEffect(()=>{
-    if(autoHide){
-        setTimeout(dismissToast, 3000)
+  useEffect(() => {
+    if (autoHide) {
+      setTimeout(dismissToast, 3000);
     }
-  },[])
+  }, []);
 
   return (
     <div className="bg-gray-900 relative h-[73px] w-full flex justify-between items-center rounded-xl pl-2 overflow-hidden">
@@ -83,18 +46,22 @@ const CustomToastEducation: React.FC<ICustomToast> = ({
             {typeof message === "string" ? (
               <div className="text-[14px] text-green-500 font-medium p-4 flex justify-start items-center gap-3">
                 <div>
-                {type === "success" ? (
-               <CheckmarkIcon className="text-green-500 w-[24px] h-[24px]" />
-              ) : (
-                <ExclamationIcon className="text-red-500 w-[24px] h-[24px]" />
-              )}
+                  {type === "success" ? (
+                    <CheckmarkIcon className="text-green-500 w-[24px] h-[24px]" />
+                  ) : (
+                    <ExclamationIcon className="text-red-500 w-[24px] h-[24px]" />
+                  )}
                 </div>
-                <span className={`${type==="success"? "text-green-500" : "text-red-500"}`}>
-                {message}
+                <span
+                  className={`${
+                    type === "success" ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  {message}
                 </span>
               </div>
             ) : (
-              message && message()
+              typeof message === "function" && message()
             )}
           </div>
         </div>
@@ -123,7 +90,7 @@ const CustomToastEducation: React.FC<ICustomToast> = ({
                 {message}
               </p>
             ) : (
-              message && message()
+              typeof message === "function" && message()
             )}
           </div>
         </div>
