@@ -194,25 +194,37 @@ feedback_collection = db["feedback"]
 #Feedback
 
 @app.route("/submit-feedback", methods=["POST"])
-def submit_feddback():
-    data = request.get_json()
+def submit_feedback():
+    try:
+        data = request.get_json()
 
-    if "response" not in data or "feedback" not in data:
-        return jsonify({"error": "Both response and feedback are required"}), 400
+        # if "feedback" not in data or not data["feedback"].strip() or "rating" not in data or not data["rating"]:
+        #     raise ValueError("Both feedback and rating are required and cannot be empty")
 
-    response = data["response"]
-    feedback = data["feedback"]
-    timestamp = datetime.now()
+        if ("feedback" in data and data["feedback"].strip()) or ("rating" in data and data["rating"]):
+            print("Form submitted successfully!")
+        else:
+            raise ValueError("At least one of feedback or rating should be filled.")
 
-    feedback_data = {
-        "response": response,
-        "feedback": feedback,
-        "timestamp": timestamp
-    }
 
-    feedback_collection.insert_one(feedback_data)
+        feedback = data["feedback"]
+        rating = data["rating"]
+        timestamp = datetime.now()
 
-    return jsonify({"message": "Feedback submitted successfully"}), 200
+        feedback_data = {
+            "feedback": feedback,
+            "rating": rating,
+            "timestamp": timestamp
+        }
+
+        feedback_collection.insert_one(feedback_data)
+
+        return jsonify({"message": "Feedback submitted successfully"}), 200
+
+    except ValueError as ve:
+        return jsonify({"error": str(ve)}), 400
+    except Exception as e:
+        return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
 
 # Register endpoint
