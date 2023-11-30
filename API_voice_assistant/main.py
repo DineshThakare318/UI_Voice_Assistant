@@ -1,4 +1,3 @@
-import collections
 import webbrowser
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -12,14 +11,14 @@ from app.views.chat_view import ChatView
 from app import mongo_db
 from datetime import datetime
 from app.service.chat_service import voice_chat_service
-import psutil
 import pyautogui
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.service.auth import validate_jwt_token, generate_jwt_token
-import smtplib
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
+# from transformers import pipeline
+from werkzeug.utils import secure_filename
+from dotenv import find_dotenv, load_dotenv
+from transformers import pipeline
 app = Flask(__name__)
 CORS(app)
 
@@ -71,8 +70,7 @@ def process_command():
                     response = site['response']
                 else:
                     response = f"Error in opening {site['siteName']}"
-                break  
-
+                break
 
             elif "google search" in command:
                 query = command.replace("google search", "")
@@ -162,13 +160,10 @@ def process_command():
 
         return jsonify({"response": response})
 
-
-
-
-
 @app.route("/chathistory", methods=["GET"])
 def get_chat_History():
     return chat_view.get_chats()
+
 
 @app.route("/chatSearch" , methods=["GET"])
 def get_chat_Search():
@@ -198,11 +193,8 @@ def submit_feedback():
     try:
         data = request.get_json()
 
-        # if "feedback" not in data or not data["feedback"].strip() or "rating" not in data or not data["rating"]:
-        #     raise ValueError("Both feedback and rating are required and cannot be empty")
-
         if ("feedback" in data and data["feedback"].strip()) or ("rating" in data and data["rating"]):
-            print("Form submitted successfully!")
+            print("")
         else:
             raise ValueError("At least one of feedback or rating should be filled.")
 
@@ -264,13 +256,11 @@ def login():
 
 
     if user and check_password_hash(user["password"], password):
-        # Passwords match, user is authenticated
-
+       
         token = generate_jwt_token('This is the secret', user)
 
         return jsonify({"message": "Login successful","isSuccess":True, 'accessToken':token, 'username':username}), 200
     else:
-        # Invalid credentials
         return jsonify({"error": "Invalid username or password"}), 401
 
 
@@ -287,7 +277,6 @@ def authorize_request():
     payload = validate_jwt_token(token, 'This is the secret')
     
     if payload:
-        # The token is valid, you can now use the payload to authorize the user
         user_id = payload['_id']
         return None
     else:
@@ -301,6 +290,57 @@ def check():
         return jsonify({'isSuccess':True}), 200
     else:
         return jsonify({'isSuccess':False}), 401
+
+
+
+#    from transformers import GPT2LMHeadModel ,GPT2Tokenizer
+# model_name = "gpt2"
+# model = GPT2LMHeadModel.from_pretrained(model_name)
+# tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+
+# input_text = input("enter text: ")
+
+# input_ids = tokenizer.encode(input_text, return_tensors="pt")
+
+# output = model.generate(input_ids, max_length=500, num_beams=5, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
+
+# generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+# print("Generated Text:", generated_text)
+
+
+# load_dotenv(find_dotenv())
+# def imgtotext():
+#     try:
+#         # Get image URL from the request
+#         data = request.get_json()
+#         url = data.get('url')
+
+#         # Perform image-to-text
+#         img_to_text = pipeline("image-to-text", model="Salesforce/blip-image-captioning-base")
+#         text = img_to_text(url)
+
+#         return jsonify({"text": text})
+#     except Exception as e:
+#         return jsonify({"error": str(e)})
+    
+    ######################   Chat Generation           ############################
+
+#     @app.route("/chat-generation",methods=["POST"])
+# def get_gen():
+#     data =request.get_json()
+#     model_name = "gpt2"
+#     model = GPT2LMHeadModel.from_pretrained(model_name)
+#     tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+
+#     input_text = data["command"].lower()
+
+#     input_ids = tokenizer.encode(input_text, return_tensors="pt")
+
+#     output = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
+
+#     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+#     # print("Generated Text:", generated_text)
+#     return jsonify({"response": generated_text} ) 
 
 
 if __name__ == "__main__":
