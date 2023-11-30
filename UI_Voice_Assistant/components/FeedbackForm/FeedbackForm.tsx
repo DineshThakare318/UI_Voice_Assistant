@@ -113,7 +113,7 @@ const FeedbackForm: React.FC = () => {
           />
           <StarRating onChange={handleRatingChange} />
           <button
-            className=" outline-none border-2  border-green-500 rounded-md p-2 hover:bg-green-500 hover:text-white my-2"
+            className="outline-none border-2  hover:border-gray-100  border-gray-500 rounded-xl p-2 hover:bg-green-500 hover:text-white my-2"
             onClick={handleSubmit}
           >
             Submit feedback

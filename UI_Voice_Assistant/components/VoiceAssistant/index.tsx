@@ -119,7 +119,8 @@ const VoiceAssistant = () => {
         }
       }
     } catch (e: any) {
-      showAlert("Please provide a valid command.");
+      // showAlert("Please provide a valid command.");
+      console.log("Please provide a valid command.");
     }
   };
 
@@ -221,7 +222,7 @@ const VoiceAssistant = () => {
         </div>
         <div className="mt-7">
           <div className="text-gray-300">Today</div>
-          <div className="mt-2 max-h-2/4 h-2/4 overflow-y-scroll ">
+          <div className="mt-2 max-h-2/5 h-2/5 overflow-y-scroll ">
             {searchList.map((element: any, index: number) => (
               <div key={index}>
                 <p className="hover:bg-gray-600  p-1  rounded-md text-[13px] mx-1 cursor-pointer">
