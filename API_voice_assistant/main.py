@@ -292,55 +292,21 @@ def check():
         return jsonify({'isSuccess':False}), 401
 
 
-
-#    from transformers import GPT2LMHeadModel ,GPT2Tokenizer
-# model_name = "gpt2"
-# model = GPT2LMHeadModel.from_pretrained(model_name)
-# tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-
-# input_text = input("enter text: ")
-
-# input_ids = tokenizer.encode(input_text, return_tensors="pt")
-
-# output = model.generate(input_ids, max_length=500, num_beams=5, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
-
-# generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
-# print("Generated Text:", generated_text)
-
-
-# load_dotenv(find_dotenv())
-# def imgtotext():
-#     try:
-#         # Get image URL from the request
-#         data = request.get_json()
-#         url = data.get('url')
-
-#         # Perform image-to-text
-#         img_to_text = pipeline("image-to-text", model="Salesforce/blip-image-captioning-base")
-#         text = img_to_text(url)
-
-#         return jsonify({"text": text})
-#     except Exception as e:
-#         return jsonify({"error": str(e)})
-    
     ######################   Chat Generation           ############################
-
-#     @app.route("/chat-generation",methods=["POST"])
-# def get_gen():
-#     data =request.get_json()
-#     model_name = "gpt2"
-#     model = GPT2LMHeadModel.from_pretrained(model_name)
-#     tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-
-#     input_text = data["command"].lower()
-
-#     input_ids = tokenizer.encode(input_text, return_tensors="pt")
-
-#     output = model.generate(input_ids, max_length=50, num_beams=5, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
-
-#     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
-#     # print("Generated Text:", generated_text)
-#     return jsonify({"response": generated_text} ) 
+from transformers import GPT2LMHeadModel ,GPT2Tokenizer
+@app.route("/text-generation",methods=["POST"])
+def gen_text():
+    data =request.get_json()
+    model_name = "gpt2" 
+    model = GPT2LMHeadModel.from_pretrained(model_name)
+    tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+    # input_text = input("enter text: ")
+    input_text = data["command"].lower()
+    input_ids = tokenizer.encode(input_text, return_tensors="pt")
+    output = model.generate(input_ids, max_length=120, num_beams=5, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
+    generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+    # print("Generated Text:", generated_text)
+    return jsonify({"response":generated_text})
 
 
 if __name__ == "__main__":
