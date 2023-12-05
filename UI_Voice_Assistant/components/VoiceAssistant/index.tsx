@@ -399,7 +399,6 @@ const VoiceAssistant = () => {
           </>
         )}
       </div>
-      {/* fgfgg/ */}
     </div>
   );
 };
