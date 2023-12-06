@@ -18,7 +18,7 @@ from app.service.auth import validate_jwt_token, generate_jwt_token
 # from transformers import pipeline
 from werkzeug.utils import secure_filename
 from dotenv import find_dotenv, load_dotenv
-from transformers import pipeline
+# from transformers import pipeline
 app = Flask(__name__)
 CORS(app)
 
@@ -293,20 +293,20 @@ def check():
 
 
     ######################   Chat Generation           ############################
-from transformers import GPT2LMHeadModel ,GPT2Tokenizer
-@app.route("/text-generation",methods=["POST"])
-def gen_text():
-    data =request.get_json()
-    model_name = "gpt2" 
-    model = GPT2LMHeadModel.from_pretrained(model_name)
-    tokenizer = GPT2Tokenizer.from_pretrained(model_name)
-    # input_text = input("enter text: ")
-    input_text = data["command"].lower()
-    input_ids = tokenizer.encode(input_text, return_tensors="pt")
-    output = model.generate(input_ids, max_length=120, num_beams=5, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
-    generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
-    # print("Generated Text:", generated_text)
-    return jsonify({"response":generated_text})
+# from transformers import GPT2LMHeadModel ,GPT2Tokenizer
+# @app.route("/text-generation",methods=["POST"])
+# def gen_text():
+#     data =request.get_json()
+#     model_name = "gpt2" 
+#     model = GPT2LMHeadModel.from_pretrained(model_name)
+#     tokenizer = GPT2Tokenizer.from_pretrained(model_name)
+#     # input_text = input("enter text: ")
+#     input_text = data["command"].lower()
+#     input_ids = tokenizer.encode(input_text, return_tensors="pt")
+#     output = model.generate(input_ids, max_length=120, num_beams=5, no_repeat_ngram_size=2, top_k=50, top_p=0.95, temperature=0.7)
+#     generated_text = tokenizer.decode(output[0], skip_special_tokens=True)
+#     # print("Generated Text:", generated_text)
+#     return jsonify({"response":generated_text})
 
 
 if __name__ == "__main__":

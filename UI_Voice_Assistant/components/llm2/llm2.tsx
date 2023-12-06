@@ -22,6 +22,7 @@ const LLM2 = () => {
 
   const queryAPI = async () => {
     try {
+      setLoader(true)
       const response = await fetch(
         "https://api-inference.huggingface.co/models/playgroundai/playground-v2-1024px-aesthetic",
         {
@@ -55,6 +56,10 @@ const LLM2 = () => {
       }
     } catch (error: any) {
       console.error("Error:", error.message);
+      alert(error.message);
+    }
+    finally{
+      setLoader(false)
     }
   };
 
@@ -110,31 +115,78 @@ const LLM2 = () => {
 
   return (
     <div className="my-2 flex justify-center  h-full w-3/5   bg-white rounded-lg overflow-hidden relative">
-      
       {changeModel ? (
+        // <div>
         <div>
-          <div>
-            <h1>Image-to-Text API</h1>
+          <div className="absolute bottom-7 flex justify-between items-center border-[2px] border-gray-600 rounded-md w-[400px]  pl-1 pr-4 py-2">
             <input
+              className="outline-none w-full"
+              onKeyDown={(e) => {
+                if (e.key == "Enter") {
+                  queryAPI();
+                }
+              }}
               type="text"
               placeholder="Enter text for processing"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
             />
-            <button onClick={queryAPI}>Process</button>
-
-            {textResult && <div>Text Result: {textResult}</div>}
+            <button onClick={queryAPI}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 16 16"
+                fill="none"
+                className="icon-sm m-1 md:m-0"
+                height={25}
+                width={25}
+              >
+                <path
+                  d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
+                  fill={`${inputText ? "#19C37D" : "grey"}`}
+                ></path>
+              </svg>
+            </button>
+          </div>
+          <div className="flex justify-center items-center gap-2 pt-3 text-[27px] ">
+              <div className="font-bold text-[#333333]">Text to</div>
+              <div>
+                <b className="text-orange-400">Image</b>
+              </div>
+            </div>
+              <div className="justify-center  items-center pt-9 max-h-[75%] mt-16">
+              {loader ? (
+                <Loader />
+              ) : (
+                <>
+                  {!response ? (
+                    <div className="flex flex-col justify-center items-center  mt-20  font-bold">
+                      Which image you want
+                    </div>
+                  ) : (
+                    <p className="text-center  mx-4">{response}</p>
+                  )}{" "}
+                </>
+              )}
+            </div>
+                 
+              
+          {/* <div className="flex justify-center  pt-7 font-bold font-sans">
+            Text to image
+          </div> */}
+          {textResult && <div>Text Result: {textResult}</div>}
+          <div className="h-96 w-96 flex justify-center items-center">
             {imageURL && (
               <Image
                 src={imageURL}
                 alt="Processed Image"
-                width={500}
-                height={500}
+                width={300}
+                height={100}
               />
             )}
           </div>
         </div>
       ) : (
+        // </div>
         <>
           <div className="h-[20%] max-h-[30%] w-1/3">
             <div className="flex justify-center items-center gap-2 pt-6 text-[30px] ">
@@ -155,15 +207,15 @@ const LLM2 = () => {
               {loader ? (
                 <Loader />
               ) : (
-                  <>
-                    {!response ? (
-                      <div className="flex flex-col justify-center items-center  mt-20  font-bold">
-                        How can I help you today?
-                      </div>
-                    ) : (
-                      <p className="text-center  mx-4">{response}</p>
-                    )}{" "}
-                  </>
+                <>
+                  {!response ? (
+                    <div className="flex flex-col justify-center items-center  mt-20  font-bold">
+                      How can I help you today?
+                    </div>
+                  ) : (
+                    <p className="text-center  mx-4">{response}</p>
+                  )}{" "}
+                </>
               )}
             </div>
           </div>
@@ -210,12 +262,26 @@ const LLM2 = () => {
               Please input the correct command for an accurate response
             </div>
           </div>
-          </>
+        </>
       )}
-      {/* <div className="absolute bottom-20 flex flex-col">
-        <button onClick={() => setChangeModel(true)}>Text to Image</button>
-        <button className="" onClick={()=>setChangeModel(false)}>Chat Bot</button>
-      </div> */}
+      <div className="absolute bottom-20 space-x-4">
+        {!changeModel ?
+        <>
+        <button
+          className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+          onClick={() => setChangeModel(true)}
+        >
+          Go to Text to Image
+        </button>
+        </> :
+        <button
+          className="bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+          onClick={() => setChangeModel(false)}
+        >
+        Go to  Chat Bot
+        </button>}
+        
+      </div>
     </div>
   );
 };
