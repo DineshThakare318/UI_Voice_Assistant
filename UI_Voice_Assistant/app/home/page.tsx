@@ -1,4 +1,5 @@
 "use client";
+import TextToImage from "@/components/TextToImage/TextToImage";
 import VoiceAssistant from "@/components/VoiceAssistant";
 import LLM2 from "@/components/llm2/llm2";
 import axios from "axios";
@@ -12,6 +13,7 @@ export default function Home() {
     <div className="w-full h-full flex justify-center items-center py-4 bg-slate-900 bg-cover">
       {/* <VoiceAssistant /> */}
       <LLM2/>
+      {/* <TextToImage/> */}
     </div>
   );
 }
