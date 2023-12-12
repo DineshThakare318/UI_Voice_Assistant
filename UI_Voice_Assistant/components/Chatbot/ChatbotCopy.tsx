@@ -10,9 +10,8 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import FeedbackForm from "../FeedbackForm/FeedbackForm";
-import { SlArrowLeft, SlArrowRight, SlList } from "react-icons/sl";
-
-const Chatbot = () => {
+import { SlArrowLeft,SlList } from "react-icons/sl";
+const Chatbotcopy = () => {
   const [question, setQuestion] = useState("");
   const [response, setResponse] = useState<any>("");
   const [error, setError] = useState(null);
@@ -190,7 +189,7 @@ const Chatbot = () => {
             className="absolute left-52 top-72 cursor-pointer"
             onClick={() => setHideSideBar(true)}
           >
-            <SlArrowLeft />
+            <SlArrowLeft className="text-[10px] font-bold hover:text-black hover:text-[12px]"/>
           </div>
         </>
       ) : (
@@ -211,7 +210,7 @@ const Chatbot = () => {
           >
             <BiLeftArrowAlt className="h-6 w-40 absolute -left-64" />
           </p>
-          <div className="flex justify-center items-center w-3/4">
+          <div className={`flex justify-center items-center w-3/4`}>
             <FeedbackForm />
           </div>
         </div>
@@ -249,6 +248,9 @@ const Chatbot = () => {
                   </svg>
                 </button>
               </div>
+              <div className={`absolute bottom-2 text-center text-[12px] font-sans ${!hideSideBar ? "pl-7" : "pl-7"}`}>
+              Please input the correct command for an accurate response
+            </div>
               <div className="flex justify-center items-center gap-2 pt-9 text-[27px]">
                 <div className="font-bold text-[#333333]">Text to</div>
                 <div>
@@ -304,23 +306,23 @@ const Chatbot = () => {
                     <b className="text-orange-400">Assistant</b>
                   </div>
                 </div>
-                <div className=" pt-16 max-h-[75%] mt-4">
+                <div className="flex w-[100%] justify-center pt-16 max-h-[75%] mt-4">
                   {loader ? (
                     <Loader />
                   ) : (
-                    <div className="h-1/2 overflow-y-scroll">
+                    <div className={`${!hideSideBar ? "w-[70%]" :""} flex justify-center  h-1/2  overflow-y-scroll`}>
                       {!response ? (
-                        <p className="flex justify-center w-full mt-20  font-bold">
+                        <p className="w-full mt-20  font-bold">
                           How can I help you today?
                         </p>
                       ) : (
                         // </div>
-                        <div className="ml-12">
-                          <p>
-                            <b>User:{"  "}</b>
+                        <div className=" mx-7 ">
+                          <p className={`h-[150%]  max-h-72 overflow-y-scroll ${!hideSideBar ? "" : "pl-11"}`}>
+                          <p >
+                            <b>User:{""}</b>
                             {question}
                           </p>
-                          <p className=" h-1/4  max-h-72 overflow-y-scroll">
                             <b>ChatBot:</b>{" "}
                             {steps.map((step: any, index: any) => (
                               <div key={index}>
@@ -334,7 +336,7 @@ const Chatbot = () => {
                   )}
                 </div>
               </div>
-              <div className={`${hideSideBar ? "left-44" : "left-60"} bottom-3 absolute "`}>
+              <div className={`${hideSideBar ? "left-36" : "left-60"} bottom-3 absolute "`}>
                 <div className=" flex justify-center items-center border-[2px] border-gray-600 rounded-md w-[500px] mt-3">
                   <input
                     value={question}
@@ -375,7 +377,7 @@ const Chatbot = () => {
                     </button>
                   </div>
                 </div>
-                <div className="text-[12px] font-sans">
+                <div className="text-[12px] text-center font-sans">
                   {" "}
                   Please input the correct command for an accurate response
                 </div>
@@ -386,7 +388,7 @@ const Chatbot = () => {
             {!changeModel ? (
               <div className="pl-32">
                 <button
-                  className={` ${!hideSideBar ?  "ml-14 " : "-ml-16"} bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4  border border-blue-700 rounded`}
+                  className={` ${!hideSideBar ?  "ml-9" : "-ml-36"} bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4  border border-blue-700 rounded`}
                   onClick={() => setChangeModel(true)}
                 >
                   Go to Text to Image Generator
@@ -403,8 +405,7 @@ const Chatbot = () => {
           </div>
         </>
       )}
-      {/* </div> */}
     </div>
   );
 };
-export default Chatbot;
+export default Chatbotcopy;

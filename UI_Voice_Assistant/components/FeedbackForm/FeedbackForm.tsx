@@ -103,7 +103,7 @@ const FeedbackForm: React.FC = () => {
       {feedbackStatus ? (
         <div className="flex justify-center items-center font-bold pl-40">Thank you for sharing your feedback.</div>
       ) : (
-        <div className="flex flex-col justify-center items-center  ml-40">
+        <div className={`flex flex-col justify-center items-center  ml-40`}>
           <h1 className="py-2 font-bold">Feedback</h1>
           <textarea
           className="border-2 border-black outline-none rounded-md py-2 px-2 h-40 w-72 my-2"
@@ -113,7 +113,7 @@ const FeedbackForm: React.FC = () => {
           />
           <StarRating onChange={handleRatingChange} />
           <button
-            className="outline-none border-2  hover:border-gray-100  border-gray-500 rounded-xl p-2 hover:bg-green-500 hover:text-white my-2"
+            className="outline-none border-2  border-green-600 rounded-xl p-2 bg-green-500 hover:bg-green-600 hover:border-green-700 text-white my-2"
             onClick={handleSubmit}
           >
             Submit feedback

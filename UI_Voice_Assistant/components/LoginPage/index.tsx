@@ -86,7 +86,7 @@ const  LoginPage =()=> {
               {showPassword ? <p className="hover:bg-slate-200 rounded-full p-1"><FaEye /> </p> : <p className="hover:bg-slate-200 rounded-full p-1"> <FaEyeSlash /> </p> 
               } </div>
              </div>
-           <p className="flex justify-start text-[13px] text-start hover:underline cursor-pointer pt-1 pr-32 pl-12">Forgot Password?</p>
+             <Link href="/pages/AboutPage"><p className="flex justify-start text-[13px] text-start hover:underline cursor-pointer pt-1 pr-32 pl-12">Forgot Password?</p></Link>
           <button onClick={handleLogin} className="h-10 rounded-lg  font-bold text-white w-[70%] border  mt-5 mb-3 bg-emerald-500  hover:bg-emerald-600">Login</button>
            {/* <div className="flex justify-center w-[80%] pb-3">           
           <p className="mr-3">Don`t have an account?<Link href={"/RegisterPage"} className="hover:text-blue-400 cursor-pointer underline text-blue-600">{"  "}SignUp</Link></p>
