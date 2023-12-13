@@ -32,7 +32,7 @@ const  LoginPage =()=> {
         showAlert(e?.response?.data?.error,ToastTypes.ERROR)
       }
       else{
-      alert("you are offline")
+        showAlert("You are offline",ToastTypes.ERROR)
        }
        }
     }

@@ -10,7 +10,7 @@ import { AiOutlineLogout } from "react-icons/ai";
 import { useRouter } from "next/navigation";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import FeedbackForm from "../FeedbackForm/FeedbackForm";
-import { SlArrowLeft,SlList } from "react-icons/sl";
+import { SlArrowLeft, SlList } from "react-icons/sl";
 const Chatbotcopy = () => {
   const [question, setQuestion] = useState("");
   const [response, setResponse] = useState<any>("");
@@ -137,16 +137,31 @@ const Chatbotcopy = () => {
     }
   };
 
+const userName:any = localStorage.getItem("username")
+let userName1:any;
+if(userName.length>15){
+  userName1 = userName.slice(0,15) + "...";
+}
+else{
+  userName1 = userName;
+}
+console.log();
+
   return (
     <div className="my-2 flex justify-center  h-full w-[60%] bg-white rounded-lg overflow-hidden relative">
       {!hideSideBar ? (
         <>
           <div className="flex flex-col absolute left-0  w-[25%] pr-2 bg-gray-800 py-4 max-h-full h-full text-white px-1">
             <div className="px-2">
-              Welcome, <br />{" "}
-              <p className="text-[#34eb9b] font-bold ">
-                {localStorage.getItem("username")}
+              Welcome,
+            <div className="group relative my-1 flex">
+            <p className="text-[#34eb9b] font-bold cursor-default">
+                {userName1}
               </p>
+              <span className="absolute top-7 scale-0 rounded  p-2 text-[13px] text-black bg-amber-50 group-hover:scale-100">
+                {userName}
+              </span>
+            </div>
             </div>
             <div className="mt-7">
               <div className="text-gray-300">Today</div>
@@ -189,7 +204,7 @@ const Chatbotcopy = () => {
             className="absolute left-52 top-72 cursor-pointer"
             onClick={() => setHideSideBar(true)}
           >
-            <SlArrowLeft className="text-[10px] font-bold hover:text-black hover:text-[12px]"/>
+            <SlArrowLeft className="text-[10px] font-bold hover:text-black hover:text-[12px]" />
           </div>
         </>
       ) : (
@@ -216,83 +231,95 @@ const Chatbotcopy = () => {
         </div>
       ) : (
         <>
-          {changeModel ? (   
-            <>         
-            <div className={`${!hideSideBar ? "pl-52 " : ""}`}>
-              <div className={`absolute bottom-7 flex justify-between items-center border-[2px] border-gray-600 rounded-md w-[400px] left-52 pl-1 ${!hideSideBar ? "ml-24" :""} pr-4 py-2`}>
-                <input
-                  className="outline-none w-full"
-                  onKeyDown={(e) => {
-                    if (e.key == "Enter") {
-                      queryAPI();
-                    }
-                  }}
-                  type="text"
-                  placeholder="Enter text for processing"
-                  value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
-                />
-                <button onClick={queryAPI}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="icon-sm m-1 md:m-0"
-                    height={25}
-                    width={25}
-                  >
-                    <path
-                      d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
-                      fill={`${inputText ? "#19C37D" : "grey"}`}
-                    ></path>
-                  </svg>
-                </button>
-              </div>
-              <div className={`absolute bottom-2 text-center text-[12px] font-sans ${!hideSideBar ? "pl-7" : "pl-7"}`}>
-              Please input the correct command for an accurate response
-            </div>
-              <div className="flex justify-center items-center gap-2 pt-9 text-[27px]">
-                <div className="font-bold text-[#333333]">Text to</div>
-                <div>
-                  <b className="text-orange-400">Image</b>
+          {changeModel ? (
+            <>
+              <div className={`${!hideSideBar ? "pl-52 " : ""}`}>
+                <div
+                  className={`absolute bottom-7 flex justify-between items-center border-[2px] border-gray-600 rounded-md w-[400px] left-52 pl-1 ${
+                    !hideSideBar ? "ml-24" : ""
+                  } pr-4 py-2`}
+                >
+                  <input
+                    className="outline-none w-full"
+                    onKeyDown={(e) => {
+                      if (e.key == "Enter") {
+                        queryAPI();
+                      }
+                    }}
+                    type="text"
+                    placeholder="Enter text for processing"
+                    value={inputText}
+                    onChange={(e) => setInputText(e.target.value)}
+                  />
+                  <button onClick={queryAPI}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      className="icon-sm m-1 md:m-0"
+                      height={25}
+                      width={25}
+                    >
+                      <path
+                        d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
+                        fill={`${inputText ? "#19C37D" : "grey"}`}
+                      ></path>
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  className={`absolute bottom-2 text-center text-[12px] font-sans ${
+                    !hideSideBar ? "pl-7" : "pl-7"
+                  }`}
+                >
+                  Please input the correct command for an accurate response
+                </div>
+                <div className="flex justify-center items-center gap-2 pt-9 text-[27px]">
+                  <div className="font-bold text-[#333333]">Text to</div>
+                  <div>
+                    <b className="text-orange-400">Image</b>
+                  </div>
+                </div>
+                <div className="justify-center  items-center pt-2 max-h-[75%] mt-7">
+                  {loader ? (
+                    <div className="pt-16">
+                      {" "}
+                      <Loader />
+                    </div>
+                  ) : (
+                    <>
+                      <div className="flex flex-col justify-center items-center   font-bold">
+                        {!imageURL ? (
+                          <p className="flex justify-center pt-20 text-[13px] font-sans">
+                            {" "}
+                            Please specify the desired image you would like
+                            generated.
+                          </p>
+                        ) : (
+                          <div className="h-96 w-96 flex justify-center items-center">
+                            {imageURL && (
+                              <Image
+                                src={imageURL}
+                                alt="Processed Image"
+                                width={300}
+                                height={100}
+                              />
+                            )}
+                          </div>
+                        )}{" "}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
-              <div className="justify-center  items-center pt-2 max-h-[75%] mt-7">
-                {loader ? (
-                  <div className="pt-16">
-                    {" "}
-                    <Loader />
-                  </div>
-                ) : (
-                  <>
-                    <div className="flex flex-col justify-center items-center   font-bold">
-                      {!imageURL ? (
-                        <p className="flex justify-center pt-20 text-[13px] font-sans">
-                          {" "}
-                          Please specify the desired image you would like
-                          generated.
-                        </p>
-                      ) : (
-                        <div className="h-96 w-96 flex justify-center items-center">
-                          {imageURL && (
-                            <Image
-                              src={imageURL}
-                              alt="Processed Image"
-                              width={300}
-                              height={100}
-                            />
-                          )}
-                        </div>
-                      )}{" "}
-                    </div>
-                  </>
-                )}
-              </div>
-            </div>  
             </>
           ) : (
-            <div className={`${!hideSideBar ? "" : ""}"flex justify-center "`} >
-              <div className={`${!hideSideBar ? "pl-36 " : ""}"h-[20%] max-h-[30%] w-[80%]"`}>
+            <div className={`${!hideSideBar ? "" : ""}"flex justify-center "`}>
+              <div
+                className={`${
+                  !hideSideBar ? "pl-36 " : ""
+                }"h-[20%] max-h-[30%] w-[80%]"`}
+              >
                 <div className="flex justify-center items-center pl-7 gap-2 pt-6 text-[30px] ">
                   <div className="font-bold text-[#333333]">Your</div>
                   <Image
@@ -310,19 +337,31 @@ const Chatbotcopy = () => {
                   {loader ? (
                     <Loader />
                   ) : (
-                    <div className={`${!hideSideBar ? "w-[70%]" :""} flex justify-center  h-1/2  overflow-y-scroll`}>
+                    <div
+                      className={`${
+                        !hideSideBar ? "w-[70%]" : ""
+                      } flex justify-center  h-1/2  overflow-y-scroll`}
+                    >
                       {!response ? (
-                        <p className="w-full mt-20  font-bold">
+                        <p
+                          className={`w-full mt-20 ${
+                            hideSideBar ? "pl-6" : ""
+                          } font-bold`}
+                        >
                           How can I help you today?
                         </p>
                       ) : (
                         // </div>
                         <div className=" mx-7 ">
-                          <p className={`h-[150%]  max-h-72 overflow-y-scroll ${!hideSideBar ? "" : "pl-11"}`}>
-                          <p >
-                            <b>User:{""}</b>
-                            {question}
-                          </p>
+                          <p
+                            className={`h-[150%]  max-h-72 overflow-y-scroll ${
+                              !hideSideBar ? "" : "pl-11"
+                            }`}
+                          >
+                            <p>
+                              <b>User: </b>
+                              {question}
+                            </p>
                             <b>ChatBot:</b>{" "}
                             {steps.map((step: any, index: any) => (
                               <div key={index}>
@@ -336,7 +375,11 @@ const Chatbotcopy = () => {
                   )}
                 </div>
               </div>
-              <div className={`${hideSideBar ? "left-36" : "left-60"} bottom-3 absolute "`}>
+              <div
+                className={`${
+                  hideSideBar ? "left-36" : "left-60"
+                } bottom-3 absolute "`}
+              >
                 <div className=" flex justify-center items-center border-[2px] border-gray-600 rounded-md w-[500px] mt-3">
                   <input
                     value={question}
@@ -388,7 +431,9 @@ const Chatbotcopy = () => {
             {!changeModel ? (
               <div className="pl-32">
                 <button
-                  className={` ${!hideSideBar ?  "ml-9" : "-ml-36"} bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4  border border-blue-700 rounded`}
+                  className={` ${
+                    !hideSideBar ? "ml-9" : "-ml-36"
+                  } bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4  border border-blue-700 rounded`}
                   onClick={() => setChangeModel(true)}
                 >
                   Go to Text to Image Generator
@@ -396,7 +441,9 @@ const Chatbotcopy = () => {
               </div>
             ) : (
               <button
-                className={`${!hideSideBar ? "ml-48" : ""} bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 border border-blue-700 rounded`}
+                className={`${
+                  !hideSideBar ? "ml-48" : ""
+                } bg-blue-500 hover:bg-blue-800 text-white font-bold py-2 px-4 border border-blue-700 rounded`}
                 onClick={() => setChangeModel(false)}
               >
                 Go to Chat Bot
