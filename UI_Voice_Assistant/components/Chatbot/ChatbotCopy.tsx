@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import FeedbackForm from "../FeedbackForm/FeedbackForm";
 import { SlArrowLeft, SlList } from "react-icons/sl";
+
 const Chatbotcopy = () => {
   const [question, setQuestion] = useState("");
   const [response, setResponse] = useState<any>("");
@@ -21,7 +22,7 @@ const Chatbotcopy = () => {
   const [imageURL, setImageURL] = useState("");
   const [changeModel, setChangeModel] = useState(false);
 
-  const queryAPI = async () => {
+  const textToImage = async () => {
     try {
       setLoader(true);
       const response = await fetch(
@@ -61,9 +62,9 @@ const Chatbotcopy = () => {
     }
   };
 
-  const fetchData = async () => {
+  const textGeneration = async () => {
     try {
-      setError(null); // Clear any previous errors
+      setError(null);
       setLoader(true);
       const apiUrl = "http://localhost:1234/v1/chat/completions";
       const requestBody = {
@@ -137,31 +138,79 @@ const Chatbotcopy = () => {
     }
   };
 
-const userName:any = localStorage.getItem("username")
-let userName1:any;
-if(userName.length>15){
-  userName1 = userName.slice(0,15) + "...";
-}
-else{
-  userName1 = userName;
-}
-console.log();
+  const userName: any = localStorage.getItem("username");
+  let userName1: any;
+  if (userName.length > 15) {
+    userName1 = userName.slice(0, 15) + "...";
+  } else {
+    userName1 = userName;
+  }
 
+  const [showPopup, setShowPopup] = useState(false);
+  const handleLogout = () => {
+    setShowPopup(true);
+  };
+
+  const handleConfirmLogout = () => {
+    localStorage.setItem("accessToken", "");
+    check();
+    setShowPopup(false);
+  };
+
+  const handleCancelLogout = () => {
+    setShowPopup(false);
+  };
+
+  //
+  const extractCodeBlocks = (inputString: any) => {
+    const codeBlockRegex = /```([^`]+)```/g;
+    const codeBlocks = [];
+    let match;
+
+    while ((match = codeBlockRegex.exec(inputString)) !== null) {
+      codeBlocks.push(match[1].trim());
+    }
+    return codeBlocks;
+  };
+  //
   return (
     <div className="my-2 flex justify-center  h-full w-[60%] bg-white rounded-lg overflow-hidden relative">
+      {showPopup && (
+        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white px-4 pt-7 pb-3 space-y-7 rounded-lg ">
+            <p className="text-black text-[15x] font-semibold">
+              Are you sure you want to logout?
+            </p>
+            <div className="flex justify-end mt-4 gap-3">
+              <button
+                onClick={handleCancelLogout}
+                className="text-white text-[12px] bg-green-400  border-0 py-1 px-3 focus:outline-none hover:bg-green-600   rounded "
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmLogout}
+                className="text-white text-[12px] bg-red-500 border-0 py-1 px-3 focus:outline-none rounded hover:bg-red-600"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       {!hideSideBar ? (
         <>
           <div className="flex flex-col absolute left-0  w-[25%] pr-2 bg-gray-800 py-4 max-h-full h-full text-white px-1">
             <div className="px-2">
               Welcome,
-            <div className="group relative my-1 flex">
-            <p className="text-[#34eb9b] font-bold cursor-default">
-                {userName1}
-              </p>
-              <span className="absolute top-7 scale-0 rounded  p-2 text-[13px] text-black bg-amber-50 group-hover:scale-100">
-                {userName}
-              </span>
-            </div>
+              <div className="group relative my-1 flex">
+                <p className="text-[#34eb9b] font-bold cursor-default">
+                  {userName1}
+                </p>
+                <span className="absolute top-7 scale-0 rounded  p-2 text-[13px] text-black bg-amber-50 group-hover:scale-100">
+                  {userName}
+                </span>
+              </div>
             </div>
             <div className="mt-7">
               <div className="text-gray-300">Today</div>
@@ -188,10 +237,7 @@ console.log();
                 </p>
               </Link>
               <div
-                onClick={() => {
-                  localStorage.setItem("accessToken", "");
-                  check();
-                }}
+                onClick={() => handleLogout()}
                 className="flex  items-center gap-1 cursor-pointer hover:bg-slate-700 rounded-lg py-2 px-1 w-auto  text-red-500 text-[15px]"
                 title="logout"
               >
@@ -212,7 +258,6 @@ console.log();
           onClick={() => setHideSideBar(false)}
           className="absolute left-4 top-4 font-bold cursor-pointer"
         >
-          {/* <SlArrowRight /> */}
           <SlList />
         </div>
       )}
@@ -243,7 +288,7 @@ console.log();
                     className="outline-none w-full"
                     onKeyDown={(e) => {
                       if (e.key == "Enter") {
-                        queryAPI();
+                        textToImage();
                       }
                     }}
                     type="text"
@@ -251,7 +296,7 @@ console.log();
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                   />
-                  <button onClick={queryAPI}>
+                  <button onClick={textToImage}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 16 16"
@@ -368,6 +413,11 @@ console.log();
                                 <p className="text-[14px]">{step.trim()}</p>
                               </div>
                             ))}
+                            {/* <br />
+                            <br />
+                            <pre className="text-[14px] whitespace-pre-line">
+                              <code>{extractCodeBlocks(response)}</code>
+                            </pre> */}
                           </p>
                         </div>
                       )}{" "}
@@ -388,7 +438,7 @@ console.log();
                     }}
                     onKeyDown={(e) => {
                       if (e.key == "Enter") {
-                        fetchData();
+                        textGeneration();
                       }
                     }}
                     className="w-full h-full p-2 outline-none px-4 bg-transparent"
@@ -400,7 +450,7 @@ console.log();
                         question ? "cursor-pointer" : "cursor-default"
                       }`}
                       onClick={() => {
-                        fetchData();
+                        textGeneration();
                       }}
                       disabled={question.length == 0}
                     >
