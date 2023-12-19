@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import CustomToastEducation from "../Toast/CustomToastEducation";
@@ -21,6 +21,7 @@ const Chatbotcopy = () => {
   const [textResult, setTextResult] = useState("");
   const [imageURL, setImageURL] = useState("");
   const [changeModel, setChangeModel] = useState(false);
+  const [selectedModel, setSelectedModel] = useState('T-Gen');
 
   const textToImage = async () => {
     try {
@@ -112,7 +113,6 @@ const Chatbotcopy = () => {
       }
     );
   };
-
   //
   const [searchList, setSearchlist] = useState<[]>([]);
   const [showFeedbackPage, setShowFeedbackPage] = useState(false);
@@ -172,9 +172,27 @@ const Chatbotcopy = () => {
     }
     return codeBlocks;
   };
+
+
+  const handleModelChange = (event:any) => {
+    setSelectedModel(event.target.value);
+    if(selectedModel =="T-Img"){
+      setChangeModel(false)
+    }
+    else if(selectedModel == "T-Gen"){
+      setChangeModel(true)
+    }
+    console.log("SelectedModel",selectedModel);
+  };
   //
   return (
     <div className="my-2 flex justify-center  h-full w-[60%] bg-white rounded-lg overflow-hidden relative">
+      <div className={`${!hideSideBar ? "left-[180px] absolute top-3" :"left-11 absolute top-3"} `}>
+      <select className="hover:bg-gray-100 py-2 mx-1 rounded" id="model" value={selectedModel} onChange={handleModelChange}>
+        <option value="T-Gen">Text-Generation</option>
+        <option value="T-Img">Text-To-Image</option>
+      </select>
+      </div>
       {showPopup && (
         <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
           <div className="bg-white px-4 pt-7 pb-3 space-y-7 rounded-lg ">
@@ -200,7 +218,7 @@ const Chatbotcopy = () => {
       )}
       {!hideSideBar ? (
         <>
-          <div className="flex flex-col absolute left-0  w-[25%] pr-2 bg-gray-800 py-4 max-h-full h-full text-white px-1">
+          <div className="flex flex-col absolute left-0  w-[22%] pr-2 bg-gray-800 py-4 max-h-full h-full text-white px-1">
             <div className="px-2">
               Welcome,
               <div className="group relative my-1 flex">
@@ -247,7 +265,7 @@ const Chatbotcopy = () => {
             </div>
           </div>
           <div
-            className="absolute left-52 top-72 cursor-pointer"
+            className="absolute left-48 top-72 cursor-pointer"
             onClick={() => setHideSideBar(true)}
           >
             <SlArrowLeft className="text-[10px] font-bold hover:text-black hover:text-[12px]" />
@@ -287,7 +305,7 @@ const Chatbotcopy = () => {
                   <input
                     className="outline-none w-full"
                     onKeyDown={(e) => {
-                      if (e.key == "Enter") {
+                      if (e.key == "Enter" && inputText.length>0) {
                         textToImage();
                       }
                     }}
@@ -296,7 +314,10 @@ const Chatbotcopy = () => {
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                   />
-                  <button onClick={textToImage}>
+                  <div className="group relative flex">
+                  <button onClick={textToImage} 
+                  disabled={inputText.length == 0}
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 16 16"
@@ -305,12 +326,15 @@ const Chatbotcopy = () => {
                       height={25}
                       width={25}
                     >
+                      
                       <path
                         d="M.5 1.163A1 1 0 0 1 1.97.28l12.868 6.837a1 1 0 0 1 0 1.766L1.969 15.72A1 1 0 0 1 .5 14.836V10.33a1 1 0 0 1 .816-.983L8.5 8 1.316 6.653A1 1 0 0 1 .5 5.67V1.163Z"
                         fill={`${inputText ? "#19C37D" : "grey"}`}
                       ></path>
                     </svg>
+                    <span className="absolute scale-0 text-white bg-black text-[10px] group-hover:scale-100 bottom-6 rounded w-[90px] py-2">Send message</span>
                   </button>
+                  </div>
                 </div>
                 <div
                   className={`absolute bottom-2 text-center text-[12px] font-sans ${
@@ -372,8 +396,7 @@ const Chatbotcopy = () => {
                     alt="Voice Assistant Logo"
                     width={70}
                     height={5}
-                  />
-                  {/* </div> */}
+                  /> 
                   <div>
                     <b className="text-orange-400">Assistant</b>
                   </div>
@@ -389,7 +412,7 @@ const Chatbotcopy = () => {
                     >
                       {!response ? (
                         <p
-                          className={`w-full mt-20 ${
+                          className={`w-full mt-20 pl-4 ${
                             hideSideBar ? "pl-6" : ""
                           } font-bold`}
                         >
@@ -427,7 +450,7 @@ const Chatbotcopy = () => {
               </div>
               <div
                 className={`${
-                  hideSideBar ? "left-36" : "left-60"
+                  hideSideBar ? "left-40" : "left-60"
                 } bottom-3 absolute "`}
               >
                 <div className=" flex justify-center items-center border-[2px] border-gray-600 rounded-md w-[500px] mt-3">
@@ -437,7 +460,7 @@ const Chatbotcopy = () => {
                       setQuestion(e.target.value), setResponse("");
                     }}
                     onKeyDown={(e) => {
-                      if (e.key == "Enter") {
+                      if (e.key == "Enter" && question.length>0) {
                         textGeneration();
                       }
                     }}
@@ -445,6 +468,7 @@ const Chatbotcopy = () => {
                     placeholder="Enter a message..."
                   />
                   <div className="flex justify-center items-center gap-2 ">
+                    <div className="group relative flex ">
                     <button
                       className={`font-[700] w-fit px-2 h-full ${
                         question ? "cursor-pointer" : "cursor-default"
@@ -467,7 +491,10 @@ const Chatbotcopy = () => {
                           fill={`${question ? "#19C37D" : "grey"}`}
                         ></path>
                       </svg>
+                      {/* className="absolute top-7 scale-0 rounded  p-2 text-[13px] text-black bg-amber-50 group-hover:scale-100" */}
+                      <span className="absolute bottom-7 scale-0 rounded w-[90px] py-2 text-[10px] text-white bg-black group-hover:scale-100">Send message</span>
                     </button>
+                  </div>
                   </div>
                 </div>
                 <div className="text-[12px] text-center font-sans">
@@ -477,7 +504,7 @@ const Chatbotcopy = () => {
               </div>
             </div>
           )}{" "}
-          <div className="absolute bottom-20 space-x-4">
+          {/* <div className="absolute bottom-20 space-x-4">
             {!changeModel ? (
               <div className="pl-32">
                 <button
@@ -499,7 +526,7 @@ const Chatbotcopy = () => {
                 Go to Chat Bot
               </button>
             )}
-          </div>
+          </div> */}
         </>
       )}
     </div>
