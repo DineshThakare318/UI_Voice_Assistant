@@ -14,7 +14,7 @@ export default function Home() {
   const [showRegisterPage, setShowRegisterPage] = useState(false);
   const [showServices, setShowServices] = useState(false);
 
-  const greeting = `Are you ready to revolutionize the way you interact with technology? Our Virtual Assistant is here to make your life easier, more efficient, and seamlessly connected. Imagine a world where tasks are completed with just the sound of your voice - welcome to the future.`;
+  const greeting = `Are you ready to revolutionize the way you interact with technology? Our ChatMinds is here to make your life easier, more efficient, and seamlessly connected - welcome to the future.`;
   const [showText, setShowText] = useState(false);
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -33,7 +33,8 @@ export default function Home() {
     // bg-[url('/bgAI2.jpg')]
     <div className=" h-screen overflow-y-scroll w-full bg-slate-800 bg-cover">
       <div className="flex justify-between w-full h-28 bg-emerald-500 p-0 m-0">
-        <Image
+        <p className="flex justify-center items-center pl-[600px] text-[25px] text-stone-100 font-medium">ChatMinds</p>
+        {/* <Image
           className=""
           src={"/virtualAssistantlogo.png"}
           alt="fdsf"
@@ -42,7 +43,7 @@ export default function Home() {
         ></Image>
         <p className="flex  items-center pl-44  text-[40px] text-[#333333] font-sans font-semibold">
           Your Virtual Assistant{" "}
-        </p>
+        </p> */}
         <div className="nav  flex items-end pb-6  pr-7 space-x-7 ">
           <div
             className="hover:underline cursor-pointer hover:text-sky-200"
@@ -167,7 +168,7 @@ export default function Home() {
                 <div className="flex flex-col">
                   <p className=" font-bold text-white text-[40px] font-sans">
                     {" "}
-                    Welcome to Your Virtual Assistant!{" "}
+                    Welcome to ChatMinds{" "}
                   </p>
                   <p className=" text-white w-1/2 font-sans !max-w-[40%] flex justify-start items-center flex-wrap">
                     {/* Are you ready to revolutionize the way you interact with

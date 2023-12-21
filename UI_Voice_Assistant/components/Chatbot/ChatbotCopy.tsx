@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import { BiLeftArrowAlt } from "react-icons/bi";
 import FeedbackForm from "../FeedbackForm/FeedbackForm";
 import { SlArrowLeft, SlList } from "react-icons/sl";
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { solarizedlight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 const Chatbotcopy = () => {
   const [question, setQuestion] = useState("");
@@ -160,6 +162,7 @@ const Chatbotcopy = () => {
   const handleCancelLogout = () => {
     setShowPopup(false);
   };
+  
 
   //
   const extractCodeBlocks = (inputString: any) => {
@@ -187,8 +190,8 @@ const Chatbotcopy = () => {
   //
   return (
     <div className="my-2 flex justify-center  h-full w-[60%] bg-white rounded-lg overflow-hidden relative">
-      <div className={`${!hideSideBar ? "left-[180px] absolute top-3" :"left-11 absolute top-3"} `}>
-      <select className="hover:bg-gray-100 py-2 mx-1 rounded" id="model" value={selectedModel} onChange={handleModelChange}>
+      <div className={`${!hideSideBar ? "left-[180px] absolute top-3" :"left-11 absolute "} `}>
+      <select className="hover:bg-gray-100 py-2  outline-none mx-1 rounded" id="model" value={selectedModel} onChange={handleModelChange}>
         <option value="T-Gen">Text-Generation</option>
         <option value="T-Img">Text-To-Image</option>
       </select>
@@ -222,7 +225,7 @@ const Chatbotcopy = () => {
             <div className="px-2">
               Welcome,
               <div className="group relative my-1 flex">
-                <p className="text-[#34eb9b] font-bold cursor-default">
+                <p className="text-[#34eb9b] text-[14px] cursor-default">
                   {userName1}
                 </p>
                 <span className="absolute top-7 scale-0 rounded  p-2 text-[13px] text-black bg-amber-50 group-hover:scale-100">
@@ -286,7 +289,7 @@ const Chatbotcopy = () => {
             onClick={() => setShowFeedbackPage(false)}
             className="cursor-pointer top-2 absolute "
           >
-            <BiLeftArrowAlt className="h-6 w-40 absolute -left-64" />
+            <BiLeftArrowAlt className="h-6 w-40 absolute -left-64 top-10" />
           </p>
           <div className={`flex justify-center items-center w-3/4`}>
             <FeedbackForm />
@@ -390,7 +393,8 @@ const Chatbotcopy = () => {
                 }"h-[20%] max-h-[30%] w-[80%]"`}
               >
                 <div className="flex justify-center items-center pl-7 gap-2 pt-6 text-[30px] ">
-                  <div className="font-bold text-[#333333]">Your</div>
+                  <div className="flex font-semibold">Chat<p className="text-orange-400">Minds</p></div>
+                  {/* <div className="font-bold text-[#333333]">Your</div>
                   <Image
                     src="/VoiceAssistantLogo.png"
                     alt="Voice Assistant Logo"
@@ -399,7 +403,7 @@ const Chatbotcopy = () => {
                   /> 
                   <div>
                     <b className="text-orange-400">Assistant</b>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="flex w-[100%] justify-center pt-16 max-h-[75%] mt-4">
                   {loader ? (
@@ -407,20 +411,21 @@ const Chatbotcopy = () => {
                   ) : (
                     <div
                       className={`${
-                        !hideSideBar ? "w-[70%]" : ""
-                      } flex justify-center  h-1/2  overflow-y-scroll`}
+                        !hideSideBar ? "w-full" : ""
+                      } flex justify-center   h-1/2  overflow-y-scroll`}
                     >
                       {!response ? (
+                        <div className="w-full">
                         <p
-                          className={`w-full mt-20 pl-4 ${
-                            hideSideBar ? "pl-6" : ""
+                          className={` mt-20 pl-4  ${
+                            hideSideBar ? "" : ""
                           } font-bold`}
                         >
                           How can I help you today?
                         </p>
+                        </div>
                       ) : (
-                        // </div>
-                        <div className=" mx-7 ">
+                        <div className=" mx-7 w-[70%]">
                           <p
                             className={`h-[150%]  max-h-72 overflow-y-scroll ${
                               !hideSideBar ? "" : "pl-11"
